@@ -74,7 +74,7 @@ exports.createBrand = async (req, res) => {
 // @access  Private/Admin
 exports.updateBrand = async (req, res) => {
   try {
-    const brand = await Brand.findByIdAndUpdate(req.params.id, req.body, {
+    const brand = await Brand.findByIdAndUpdate(req.params.slugOrId, req.body, {
       new: true,
       runValidators: true
     });
@@ -103,7 +103,7 @@ exports.updateBrand = async (req, res) => {
 // @access  Private/Admin
 exports.deleteBrand = async (req, res) => {
   try {
-    const brand = await Brand.findByIdAndDelete(req.params.id);
+    const brand = await Brand.findByIdAndDelete(req.params.slugOrId);
 
     if (!brand) {
       return res.status(404).json({
