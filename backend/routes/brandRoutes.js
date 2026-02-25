@@ -13,10 +13,8 @@ router.route('/')
   .get(getBrands)
   .post(protect, admin, createBrand);
 
-router.route('/:slug')
-  .get(getBrand);
-
-router.route('/:id')
+router.route('/:slugOrId')
+  .get(getBrand)
   .put(protect, admin, updateBrand)
   .delete(protect, admin, deleteBrand);
 

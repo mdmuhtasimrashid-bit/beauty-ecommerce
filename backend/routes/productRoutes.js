@@ -18,10 +18,8 @@ router.route('/')
 router.get('/featured', getFeaturedProducts);
 router.get('/search/:keyword', searchProducts);
 
-router.route('/:slug')
-  .get(getProduct);
-
-router.route('/:id')
+router.route('/:slugOrId')
+  .get(getProduct)
   .put(protect, admin, updateProduct)
   .delete(protect, admin, deleteProduct);
 

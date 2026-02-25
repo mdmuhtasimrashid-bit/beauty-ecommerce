@@ -183,11 +183,13 @@ exports.forgotPassword = async (req, res) => {
     // Create reset url
     const resetUrl = `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`;
 
+    // TODO: Send resetUrl via email using nodemailer instead of exposing in response
+    // const message = `You are receiving this email because you requested a password reset. Please visit: ${resetUrl}`;
+    // await sendEmail({ email: user.email, subject: 'Password Reset', message });
+
     res.status(200).json({
       success: true,
-      message: 'Password reset link sent',
-      resetToken, // In production, this should be sent via email
-      resetUrl
+      message: 'Password reset link has been sent to your email'
     });
   } catch (error) {
     res.status(500).json({
@@ -202,10 +204,10 @@ const sendTokenResponse = (user, statusCode, res) => {
   // Create token
   const token = user.getSignedJwtToken();
 
+  const cookieExpireDays = parseInt(process.env.JWT_COOKIE_EXPIRE, 10) || 30;
+
   const options = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-    ),
+    expires: new Date(Date.now() + cookieExpireDays * 24 * 60 * 60 * 1000),
     httpOnly: true
   };
 
@@ -213,14 +215,17 @@ const sendTokenResponse = (user, statusCode, res) => {
     options.secure = true;
   }
 
-  res.status(statusCode).json({
-    success: true,
-    token,
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role
-    }
-  });
+  res
+    .status(statusCode)
+    .cookie('token', token, options)
+    .json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
 };

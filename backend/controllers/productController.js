@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const Category = require('../models/Category');
+const mongoose = require('mongoose');
 
 // @desc    Get all products
 // @route   GET /api/products
@@ -120,7 +121,10 @@ exports.getProducts = async (req, res) => {
 // @access  Public
 exports.getProduct = async (req, res) => {
   try {
-    const product = await Product.findOne({ slug: req.params.slug })
+    const param = req.params.slugOrId;
+    const product = await Product.findOne(
+      mongoose.Types.ObjectId.isValid(param) ? { _id: param } : { slug: param }
+    )
       .populate('brand', 'name slug logo')
       .populate('category', 'name slug type')
       .populate({
@@ -255,8 +259,8 @@ exports.getFeaturedProducts = async (req, res) => {
 // @access  Public
 exports.searchProducts = async (req, res) => {
   try {
-    const keyword = req.params.keyword;
-    
+    const keyword = req.params.keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
     const products = await Product.find({
       $or: [
         { name: { $regex: keyword, $options: 'i' } },

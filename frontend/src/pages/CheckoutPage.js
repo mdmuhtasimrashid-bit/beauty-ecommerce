@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { FaArrowRight } from 'react-icons/fa';
@@ -435,9 +435,9 @@ const CheckoutPage = () => {
                 {/* Privacy Policy */}
                 <p className="text-xs text-gray-600 mb-4">
                   Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our{' '}
-                  <a href="/privacy-policy" className="text-primary-600 hover:underline">
+                  <Link to="/privacy" className="text-primary-600 hover:underline">
                     privacy policy
-                  </a>
+                  </Link>
                   .
                 </p>
 

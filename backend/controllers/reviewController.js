@@ -97,10 +97,12 @@ exports.updateReview = async (req, res) => {
       });
     }
 
-    review = await Review.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true
-    });
+    const { rating, title, comment, images } = req.body;
+    review = await Review.findByIdAndUpdate(
+      req.params.id,
+      { rating, title, comment, images },
+      { new: true, runValidators: true }
+    );
 
     res.status(200).json({
       success: true,
@@ -136,7 +138,11 @@ exports.deleteReview = async (req, res) => {
       });
     }
 
-    await review.remove();
+    const productId = review.product;
+    await Review.findByIdAndDelete(review._id);
+
+    // Recalculate average rating after deletion
+    await Review.getAverageRating(productId);
 
     res.status(200).json({
       success: true,

@@ -54,10 +54,7 @@ const ProductDetailPage = () => {
 
   const handleAddToCart = () => {
     if (product.stock > 0) {
-      for (let i = 0; i < quantity; i++) {
-        addToCart(product);
-      }
-      toast.success(`${quantity} item(s) added to cart`);
+      addToCart(product, quantity);
     } else {
       toast.error('Product out of stock');
     }
@@ -141,7 +138,7 @@ const ProductDetailPage = () => {
                   </div>
                 )}
                 <img
-                  src={product.images[selectedImage] || '/placeholder.jpg'}
+                  src={(product.images && product.images[selectedImage]) || '/placeholder.jpg'}
                   alt={product.name}
                   className="w-full h-96 object-contain p-8"
                   onError={(e) => {

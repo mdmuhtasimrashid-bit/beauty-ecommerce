@@ -33,7 +33,7 @@ const ComparePage = () => {
               <th className="w-32">Property</th>
               {compareItems.map((item) => (
                 <th key={item._id}>
-                  <img src={item.images[0]} alt={item.name} className="w-32 h-32 object-cover mx-auto mb-2" />
+                  <img src={item.images?.[0] || '/placeholder.svg'} alt={item.name} className="w-32 h-32 object-cover mx-auto mb-2" />
                   <p className="text-sm">{item.name}</p>
                   <button
                     onClick={() => removeFromCompare(item._id)}
@@ -66,7 +66,7 @@ const ComparePage = () => {
               <td className="font-semibold">Rating</td>
               {compareItems.map((item) => (
                 <td key={item._id} className="text-center">
-                  {item.ratings.toFixed(1)} ⭐
+                  {(item.ratings ?? 0).toFixed(1)} ⭐
                 </td>
               ))}
             </tr>

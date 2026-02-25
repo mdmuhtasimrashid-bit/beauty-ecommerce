@@ -13,10 +13,8 @@ router.route('/')
   .get(getCategories)
   .post(protect, admin, createCategory);
 
-router.route('/:slug')
-  .get(getCategory);
-
-router.route('/:id')
+router.route('/:slugOrId')
+  .get(getCategory)
   .put(protect, admin, updateCategory)
   .delete(protect, admin, deleteCategory);
 

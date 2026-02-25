@@ -1,4 +1,5 @@
 const Brand = require('../models/Brand');
+const mongoose = require('mongoose');
 
 // @desc    Get all brands
 // @route   GET /api/brands
@@ -25,7 +26,10 @@ exports.getBrands = async (req, res) => {
 // @access  Public
 exports.getBrand = async (req, res) => {
   try {
-    const brand = await Brand.findOne({ slug: req.params.slug });
+    const param = req.params.slugOrId;
+    const brand = await Brand.findOne(
+      mongoose.Types.ObjectId.isValid(param) ? { _id: param } : { slug: param }
+    );
 
     if (!brand) {
       return res.status(404).json({

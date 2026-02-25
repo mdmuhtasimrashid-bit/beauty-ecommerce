@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaStar, FaFilter } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import ReviewCard from './ReviewCard';
 import ReviewForm from './ReviewForm';
 import api from '../utils/api';
@@ -182,9 +183,9 @@ const ReviewsSection = ({ productId }) => {
               </button>
             ) : (
               <div className="text-center text-sm text-gray-600">
-                <a href="/login" className="text-primary-500 hover:underline">
+                <Link to="/login" className="text-primary-500 hover:underline">
                   Login
-                </a>{' '}
+                </Link>{' '}
                 to write a review
               </div>
             )}

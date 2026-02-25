@@ -28,7 +28,7 @@ const Navbar = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/search?q=${searchQuery}`);
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
       setSearchQuery('');
       setShowSuggestions(false);
       setSearchSuggestions([]);

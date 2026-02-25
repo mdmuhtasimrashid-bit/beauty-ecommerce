@@ -21,7 +21,7 @@ const TrackOrderPage = () => {
       const { data } = await api.get(`/orders/${orderId}`);
       
       // Verify email matches (case-insensitive)
-      if (data.data.user.email.toLowerCase() === email.toLowerCase()) {
+      if (data.data?.user?.email?.toLowerCase() === email.toLowerCase()) {
         setOrder(data.data);
       } else {
         setError('Order not found. Please check your Order ID and Email.');

@@ -69,13 +69,8 @@ ReviewSchema.statics.getAverageRating = async function(productId) {
 };
 
 // Call getAverageRating after save
-ReviewSchema.post('save', function() {
-  this.constructor.getAverageRating(this.product);
-});
-
-// Call getAverageRating before remove
-ReviewSchema.pre('remove', function() {
-  this.constructor.getAverageRating(this.product);
+ReviewSchema.post('save', async function() {
+  await this.constructor.getAverageRating(this.product);
 });
 
 module.exports = mongoose.model('Review', ReviewSchema);

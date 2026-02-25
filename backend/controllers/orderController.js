@@ -1,5 +1,6 @@
 const Order = require('../models/Order');
 const Product = require('../models/Product');
+const Coupon = require('../models/Coupon');
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -19,11 +20,68 @@ exports.createOrder = async (req, res) => {
       orderNotes
     } = req.body;
 
-    if (orderItems && orderItems.length === 0) {
+    if (!orderItems || orderItems.length === 0) {
       return res.status(400).json({
         success: false,
         error: 'No order items'
       });
+    }
+
+    // Check stock availability atomically before creating order
+    for (const item of orderItems) {
+      const product = await Product.findById(item.product);
+      if (!product) {
+        return res.status(404).json({
+          success: false,
+          error: `Product not found: ${item.name || item.product}`
+        });
+      }
+      if (product.stock < item.quantity) {
+        return res.status(400).json({
+          success: false,
+          error: `Insufficient stock for ${product.name}. Available: ${product.stock}`
+        });
+      }
+    }
+
+    // Re-validate coupon server-side if provided
+    let validatedDiscount = 0;
+    if (couponCode) {
+      const coupon = await Coupon.findOne({ code: couponCode.toUpperCase() });
+      if (coupon && coupon.isValid && coupon.isValid() && itemsPrice >= coupon.minPurchase) {
+        if (coupon.discountType === 'percentage') {
+          validatedDiscount = (itemsPrice * coupon.discountValue) / 100;
+          if (coupon.maxDiscount && validatedDiscount > coupon.maxDiscount) {
+            validatedDiscount = coupon.maxDiscount;
+          }
+        } else {
+          validatedDiscount = coupon.discountValue;
+        }
+        // Increment usedCount
+        await Coupon.findByIdAndUpdate(coupon._id, { $inc: { usedCount: 1 } });
+      }
+    }
+
+    // Atomically decrement stock
+    for (const item of orderItems) {
+      const updated = await Product.findOneAndUpdate(
+        { _id: item.product, stock: { $gte: item.quantity } },
+        { $inc: { stock: -item.quantity, sold: item.quantity } },
+        { new: true }
+      );
+      if (!updated) {
+        // Rollback previously decremented products
+        for (const prevItem of orderItems) {
+          if (prevItem === item) break;
+          await Product.findByIdAndUpdate(prevItem.product, {
+            $inc: { stock: prevItem.quantity, sold: -prevItem.quantity }
+          });
+        }
+        return res.status(400).json({
+          success: false,
+          error: `Insufficient stock for product: ${item.name || item.product}`
+        });
+      }
     }
 
     const order = await Order.create({
@@ -34,21 +92,11 @@ exports.createOrder = async (req, res) => {
       itemsPrice,
       shippingPrice,
       taxPrice,
-      totalPrice,
+      totalPrice: couponCode ? (itemsPrice + shippingPrice + (taxPrice || 0) - validatedDiscount) : totalPrice,
       couponCode,
-      discount,
+      discount: couponCode ? validatedDiscount : 0,
       orderNotes
     });
-
-    // Reduce stock for each product
-    for (const item of orderItems) {
-      const product = await Product.findById(item.product);
-      if (product) {
-        product.stock -= item.quantity;
-        product.sold += item.quantity;
-        await product.save();
-      }
-    }
 
     res.status(201).json({
       success: true,
@@ -101,7 +149,7 @@ exports.getOrderById = async (req, res) => {
     }
 
     // Check if user is owner or admin
-    if (order.user._id.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+    if (!order.user || (order.user._id.toString() !== req.user._id.toString() && req.user.role !== 'admin')) {
       return res.status(403).json({
         success: false,
         error: 'Not authorized to view this order'
@@ -215,14 +263,16 @@ exports.cancelOrder = async (req, res) => {
     order.cancelledAt = Date.now();
     order.cancellationReason = req.body.reason || 'Customer cancelled';
 
-    // Restore stock
+    // Restore stock atomically
     for (const item of order.orderItems) {
-      const product = await Product.findById(item.product);
-      if (product) {
-        product.stock += item.quantity;
-        product.sold -= item.quantity;
-        await product.save();
-      }
+      await Product.findByIdAndUpdate(item.product, [
+        {
+          $set: {
+            stock: { $add: ['$stock', item.quantity] },
+            sold: { $max: [{ $subtract: ['$sold', item.quantity] }, 0] }
+          }
+        }
+      ]);
     }
 
     await order.save();

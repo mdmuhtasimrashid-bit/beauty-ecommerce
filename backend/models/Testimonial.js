@@ -6,6 +6,11 @@ const TestimonialSchema = new mongoose.Schema({
     required: [true, 'Please add customer name'],
     trim: true
   },
+  comment: {
+    type: String,
+    required: [true, 'Please add a testimonial comment'],
+    maxlength: [500, 'Comment cannot be more than 500 characters']
+  },
   image: {
     type: String,
     required: [true, 'Please add an image']

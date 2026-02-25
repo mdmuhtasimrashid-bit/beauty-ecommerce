@@ -1,4 +1,5 @@
 const Category = require('../models/Category');
+const mongoose = require('mongoose');
 
 // @desc    Get all categories
 // @route   GET /api/categories
@@ -26,7 +27,10 @@ exports.getCategories = async (req, res) => {
 // @access  Public
 exports.getCategory = async (req, res) => {
   try {
-    const category = await Category.findOne({ slug: req.params.slug });
+    const param = req.params.slugOrId;
+    const category = await Category.findOne(
+      mongoose.Types.ObjectId.isValid(param) ? { _id: param } : { slug: param }
+    );
 
     if (!category) {
       return res.status(404).json({
