@@ -12,7 +12,7 @@ const CategoryGrid = () => {
     if (imageUrl.startsWith('http')) return imageUrl;
     // If it's a relative path, prepend the backend URL
     const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-    return baseUrl.replace('/api', '') + imageUrl;
+    return baseUrl.replace(/\/api\/?$/, '') + imageUrl;
   };
 
   // Fallback icons for categories without images

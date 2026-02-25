@@ -8,7 +8,7 @@ const TestimonialsSlider = ({ testimonials }) => {
     if (!imageUrl) return null;
     if (imageUrl.startsWith('http')) return imageUrl;
     const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-    return baseUrl.replace('/api', '') + imageUrl;
+    return baseUrl.replace(/\/api\/?$/, '') + imageUrl;
   };
 
   const settings = {
@@ -72,11 +72,17 @@ const TestimonialsSlider = ({ testimonials }) => {
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-transform hover:scale-105">
                   {/* Image Container */}
                   <div className="relative">
+                    {getImageUrl(testimonial.image) ? (
                     <img
                       src={getImageUrl(testimonial.image)}
                       alt={testimonial.customerName}
                       className="w-full h-auto object-contain"
                     />
+                    ) : (
+                    <div className="w-full h-48 bg-gray-100 flex items-center justify-center text-gray-400">
+                      No Image
+                    </div>
+                    )}
                     
                     {/* Overlay with rating */}
                     <div className="absolute top-4 right-4 bg-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2">

@@ -39,7 +39,9 @@ const AdminDashboard = () => {
         ? productsRes.data.data 
         : (Array.isArray(productsRes.data) ? productsRes.data : []);
 
-      const totalRevenue = ordersArray.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
+      const totalRevenue = ordersArray
+        .filter(o => o.orderStatus !== 'Cancelled')
+        .reduce((sum, order) => sum + (order.totalPrice || 0), 0);
       const pendingOrders = ordersArray.filter(o => o.orderStatus === 'Pending').length;
       const deliveredOrders = ordersArray.filter(o => o.orderStatus === 'Delivered').length;
 

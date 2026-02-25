@@ -37,7 +37,7 @@ const ProductCard = ({ product }) => {
   const effectivePrice = product.discountPrice > 0 ? product.discountPrice : product.price;
   
   // Generate slug if not available
-  const productSlug = product.slug || product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const productSlug = product.slug || (product.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
   return (
     <div className="product-card group relative bg-white border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-lg">

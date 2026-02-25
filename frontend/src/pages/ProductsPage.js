@@ -40,7 +40,7 @@ const ProductsPage = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [searchParams, currentPage, sortBy, filters]);
+  }, [currentPage, sortBy, filters]);
 
   const fetchProducts = async () => {
     try {

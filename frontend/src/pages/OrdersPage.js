@@ -32,7 +32,7 @@ const OrdersPage = () => {
     if (!imageUrl) return 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect fill="%23f0f0f0" width="100" height="100"/%3E%3Ctext x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="14" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
     if (imageUrl.startsWith('http')) return imageUrl;
     const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-    return baseUrl.replace('/api', '') + imageUrl;
+    return baseUrl.replace(/\/api\/?$/, '') + imageUrl;
   };
 
   const getStatusIcon = (status) => {
@@ -186,7 +186,7 @@ const OrdersPage = () => {
                     </div>
                     <div>
                       <p className="text-xs text-gray-500 mb-1">Total Amount</p>
-                      <p className="font-bold text-primary-600">{order.totalPrice.toFixed(2)}৳</p>
+                      <p className="font-bold text-primary-600">{(order.totalPrice || 0).toFixed(2)}৳</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -245,8 +245,8 @@ const OrdersPage = () => {
                     <div className="text-gray-600">
                       <span className="font-medium">Payment Method:</span> {order.paymentMethod}
                       <span className="mx-2">•</span>
-                      <span className={`font-medium ${order.isPaid ? 'text-green-600' : 'text-yellow-600'}`}>
-                        {order.isPaid ? 'Paid' : 'Pending Payment'}
+                      <span className={`font-medium ${order.paymentStatus === 'Paid' ? 'text-green-600' : 'text-yellow-600'}`}>
+                        {order.paymentStatus === 'Paid' ? 'Paid' : 'Pending Payment'}
                       </span>
                     </div>
                     <div className="text-gray-600">

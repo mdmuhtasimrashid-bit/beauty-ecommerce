@@ -28,6 +28,10 @@ const AdminOrders = () => {
   };
 
   const updateOrderStatus = async (orderId, newStatus) => {
+    if (!window.confirm(`Are you sure you want to change the order status to "${newStatus}"?`)) {
+      fetchOrders(); // Re-fetch to reset the select value
+      return;
+    }
     try {
       await api.put(`/orders/${orderId}/status`, { status: newStatus });
       toast.success('Order status updated successfully');

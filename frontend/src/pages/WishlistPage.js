@@ -100,7 +100,7 @@ const WishlistPage = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {wishlist.map((product) => {
-              const productSlug = product.slug || product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+              const productSlug = product.slug || (product.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
               const discountPercentage = product.discountPrice > 0
                 ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
                 : 0;

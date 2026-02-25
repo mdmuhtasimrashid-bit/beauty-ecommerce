@@ -152,7 +152,7 @@ const BrandPage = () => {
               <div className="text-sm mb-2">Price: {priceRange[0]}৳ — {priceRange[1]}৳</div>
               <button onClick={() => setPriceRange([minPrice, maxPrice])}
                 className="text-primary-500 text-sm hover:underline">
-                FILTER
+                RESET
               </button>
             </div>
 

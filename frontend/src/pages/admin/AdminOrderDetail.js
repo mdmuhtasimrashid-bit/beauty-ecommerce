@@ -55,7 +55,7 @@ const AdminOrderDetail = () => {
     if (!imageUrl) return 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect fill="%23f0f0f0" width="100" height="100"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="14" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
     if (imageUrl.startsWith('http')) return imageUrl;
     const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-    return baseUrl.replace('/api', '') + imageUrl;
+    return baseUrl.replace(/\/api\/?$/, '') + imageUrl;
   };
 
   if (loading) {
@@ -158,17 +158,17 @@ const AdminOrderDetail = () => {
                   <FaUser className="text-gray-400 mt-1" />
                   <div>
                     <p className="text-sm text-gray-500">Name</p>
-                    <p className="font-medium">{order.shippingAddress.fullName}</p>
+                    <p className="font-medium">{order.shippingAddress?.fullName || 'N/A'}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <FaPhone className="text-gray-400 mt-1" />
                   <div>
                     <p className="text-sm text-gray-500">Phone</p>
-                    <p className="font-medium">{order.shippingAddress.phone}</p>
+                    <p className="font-medium">{order.shippingAddress?.phone || 'N/A'}</p>
                   </div>
                 </div>
-                {order.shippingAddress.email && (
+                {order.shippingAddress?.email && (
                   <div className="flex items-start gap-3">
                     <FaEnvelope className="text-gray-400 mt-1" />
                     <div>
@@ -181,7 +181,7 @@ const AdminOrderDetail = () => {
                   <FaMapMarkerAlt className="text-gray-400 mt-1" />
                   <div>
                     <p className="text-sm text-gray-500">Shipping Address</p>
-                    <p className="font-medium">{order.shippingAddress.address}</p>
+                    <p className="font-medium">{order.shippingAddress?.address || 'N/A'}</p>
                   </div>
                 </div>
               </div>
@@ -239,29 +239,29 @@ const AdminOrderDetail = () => {
               <div className="space-y-3 mb-4 pb-4 border-b">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal:</span>
-                  <span className="font-medium">{order.itemsPrice.toFixed(2)}৳</span>
+                  <span className="font-medium">{(order.itemsPrice || 0).toFixed(2)}৳</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping:</span>
-                  <span className="font-medium">{order.shippingPrice.toFixed(2)}৳</span>
+                  <span className="font-medium">{(order.shippingPrice || 0).toFixed(2)}৳</span>
                 </div>
                 {order.taxPrice > 0 && (
                   <div className="flex justify-between">
                     <span className="text-gray-600">Tax:</span>
-                    <span className="font-medium">{order.taxPrice.toFixed(2)}৳</span>
+                    <span className="font-medium">{(order.taxPrice || 0).toFixed(2)}৳</span>
                   </div>
                 )}
                 {order.discount > 0 && (
                   <div className="flex justify-between text-green-600">
                     <span>Discount:</span>
-                    <span className="font-medium">-{order.discount.toFixed(2)}৳</span>
+                    <span className="font-medium">-{(order.discount || 0).toFixed(2)}৳</span>
                   </div>
                 )}
               </div>
 
               <div className="flex justify-between text-lg font-bold">
                 <span>Total:</span>
-                <span className="text-primary-600">{order.totalPrice.toFixed(2)}৳</span>
+                <span className="text-primary-600">{(order.totalPrice || 0).toFixed(2)}৳</span>
               </div>
 
               {order.couponCode && (

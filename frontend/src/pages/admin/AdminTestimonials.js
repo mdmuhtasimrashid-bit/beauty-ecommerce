@@ -24,7 +24,7 @@ const AdminTestimonials = () => {
     if (!imageUrl) return null;
     if (imageUrl.startsWith('http')) return imageUrl;
     const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-    return baseUrl.replace('/api', '') + imageUrl;
+    return baseUrl.replace(/\/api\/?$/, '') + imageUrl;
   };
 
   useEffect(() => {

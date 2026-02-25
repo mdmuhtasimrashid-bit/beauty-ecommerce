@@ -8,6 +8,7 @@ const AdminCoupons = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingCoupon, setEditingCoupon] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     code: '',
     discountType: 'percentage',
@@ -68,7 +69,9 @@ const AdminCoupons = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (submitting) return;
     try {
+      setSubmitting(true);
       if (editingCoupon) {
         await api.put(`/coupons/${editingCoupon._id}`, formData);
         toast.success('Coupon updated successfully');
@@ -80,6 +83,8 @@ const AdminCoupons = () => {
       fetchCoupons();
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to save coupon');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -295,9 +300,10 @@ const AdminCoupons = () => {
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600"
+                    disabled={submitting}
+                    className="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 disabled:opacity-50"
                   >
-                    {editingCoupon ? 'Update' : 'Create'}
+                    {submitting ? 'Saving...' : (editingCoupon ? 'Update' : 'Create')}
                   </button>
                 </div>
               </form>

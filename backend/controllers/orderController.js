@@ -92,7 +92,7 @@ exports.createOrder = async (req, res) => {
       itemsPrice,
       shippingPrice,
       taxPrice,
-      totalPrice: couponCode ? (itemsPrice + shippingPrice + (taxPrice || 0) - validatedDiscount) : totalPrice,
+      totalPrice: itemsPrice + shippingPrice + (taxPrice || 0) - validatedDiscount,
       couponCode,
       discount: couponCode ? validatedDiscount : 0,
       orderNotes
@@ -263,16 +263,16 @@ exports.cancelOrder = async (req, res) => {
     order.cancelledAt = Date.now();
     order.cancellationReason = req.body.reason || 'Customer cancelled';
 
-    // Restore stock atomically
+    // Restore stock
     for (const item of order.orderItems) {
-      await Product.findByIdAndUpdate(item.product, [
-        {
-          $set: {
-            stock: { $add: ['$stock', item.quantity] },
-            sold: { $max: [{ $subtract: ['$sold', item.quantity] }, 0] }
-          }
-        }
-      ]);
+      await Product.findByIdAndUpdate(item.product, {
+        $inc: { stock: item.quantity, sold: -item.quantity }
+      });
+      // Ensure sold doesn't go negative
+      await Product.findOneAndUpdate(
+        { _id: item.product, sold: { $lt: 0 } },
+        { $set: { sold: 0 } }
+      );
     }
 
     await order.save();
