@@ -2,6 +2,13 @@ import React from 'react';
 import { useCompare } from '../context/CompareContext';
 import { Link } from 'react-router-dom';
 
+const getImageUrl = (imageUrl) => {
+  if (!imageUrl) return null;
+  if (imageUrl.startsWith('http')) return imageUrl;
+  const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  return baseUrl.replace(/\/api\/?$/, '') + imageUrl;
+};
+
 const ComparePage = () => {
   const { compareItems, removeFromCompare, clearCompare } = useCompare();
 
@@ -33,7 +40,7 @@ const ComparePage = () => {
               <th className="w-32">Property</th>
               {compareItems.map((item) => (
                 <th key={item._id}>
-                  <img src={item.images?.[0] || '/placeholder.svg'} alt={item.name} className="w-32 h-32 object-cover mx-auto mb-2" />
+                  <img src={getImageUrl(item.images?.[0]) || '/placeholder.svg'} alt={item.name} className="w-32 h-32 object-cover mx-auto mb-2" />
                   <p className="text-sm">{item.name}</p>
                   <button
                     onClick={() => removeFromCompare(item._id)}

@@ -4,6 +4,13 @@ import api from '../../utils/api';
 import { toast } from 'react-toastify';
 import { FaEdit, FaTrash, FaPlus, FaSearch, FaImage } from 'react-icons/fa';
 
+const getImageUrl = (imageUrl) => {
+  if (!imageUrl) return null;
+  if (imageUrl.startsWith('http')) return imageUrl;
+  const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  return baseUrl.replace(/\/api\/?$/, '') + imageUrl;
+};
+
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -336,7 +343,7 @@ const AdminProducts = () => {
                 <tr key={product._id}>
                   <td className="px-6 py-4">
                     {product.images && product.images[0] ? (
-                      <img src={product.images[0]} alt={product.name} className="h-12 w-12 object-cover rounded" />
+                      <img src={getImageUrl(product.images[0])} alt={product.name} className="h-12 w-12 object-cover rounded" />
                     ) : (
                       <div className="h-12 w-12 bg-gray-200 rounded flex items-center justify-center">
                         <FaImage className="text-gray-400" />
@@ -669,7 +676,7 @@ const AdminProducts = () => {
                       <div className="grid grid-cols-4 gap-2 mt-3">
                         {formData.images.map((img, index) => (
                           <div key={index} className="relative group">
-                            <img src={img} alt={`Product ${index + 1}`} className="w-full h-24 object-cover rounded border" />
+                            <img src={getImageUrl(img)} alt={`Product ${index + 1}`} className="w-full h-24 object-cover rounded border" />
                             <button
                               type="button"
                               onClick={() => removeImageField(index)}

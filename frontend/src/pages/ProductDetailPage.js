@@ -8,6 +8,13 @@ import { toast } from 'react-toastify';
 import api from '../utils/api';
 import ProductCard from '../components/ProductCard';
 
+const getImageUrl = (imageUrl) => {
+  if (!imageUrl) return null;
+  if (imageUrl.startsWith('http')) return imageUrl;
+  const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  return baseUrl.replace(/\/api\/?$/, '') + imageUrl;
+};
+
 const ProductDetailPage = () => {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
@@ -142,7 +149,7 @@ const ProductDetailPage = () => {
                   </div>
                 )}
                 <img
-                  src={(product.images && product.images[selectedImage]) || '/placeholder.jpg'}
+                  src={getImageUrl(product.images && product.images[selectedImage]) || '/placeholder.jpg'}
                   alt={product.name}
                   className="w-full h-96 object-contain p-8"
                   onError={(e) => {
@@ -170,8 +177,8 @@ const ProductDetailPage = () => {
                         selectedImage === index ? 'border-pink-600' : 'border-gray-200'
                       }`}
                     >
-                      <img 
-                        src={img} 
+                      <img
+                        src={getImageUrl(img)}
                         alt={`${product.name} ${index + 1}`} 
                         className="w-full h-full object-contain p-1"
                         onError={(e) => e.target.style.display = 'none'}
@@ -190,7 +197,7 @@ const ProductDetailPage = () => {
                   <div className="flex items-center mb-4">
                     {product.brand.logo ? (
                       <img 
-                        src={product.brand.logo} 
+                        src={getImageUrl(product.brand.logo)}
                         alt={product.brand.name} 
                         className="h-12 object-contain"
                         onError={(e) => {

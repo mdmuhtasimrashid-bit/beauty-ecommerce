@@ -5,6 +5,13 @@ import ProductCard from '../components/ProductCard';
 import { FaThLarge, FaTh, FaBars } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
+const getImageUrl = (imageUrl) => {
+  if (!imageUrl) return null;
+  if (imageUrl.startsWith('http')) return imageUrl;
+  const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  return baseUrl.replace(/\/api\/?$/, '') + imageUrl;
+};
+
 const BrandPage = () => {
   const { brandName } = useParams();
   const [brand, setBrand] = useState(null);
@@ -181,7 +188,7 @@ const BrandPage = () => {
                   <Link key={product._id} to={`/product/${product.slug}`}
                     className="flex gap-3 hover:bg-gray-50 p-2 rounded transition-colors">
                     <img 
-                      src={product.images?.[0] || '/placeholder.png'} 
+                      src={getImageUrl(product.images?.[0]) || '/placeholder.png'}
                       alt={product.name}
                       className="w-16 h-16 object-cover rounded"
                       onError={(e) => {

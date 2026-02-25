@@ -6,6 +6,13 @@ import { useCompare } from '../context/CompareContext';
 import { useWishlist } from '../context/WishlistContext';
 import { toast } from 'react-toastify';
 
+const getImageUrl = (imageUrl) => {
+  if (!imageUrl) return null;
+  if (imageUrl.startsWith('http')) return imageUrl;
+  const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  return baseUrl.replace(/\/api\/?$/, '') + imageUrl;
+};
+
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
   const { addToCompare } = useCompare();
@@ -56,7 +63,7 @@ const ProductCard = ({ product }) => {
         
         {!imageError && product.images && product.images[0] ? (
           <img
-            src={product.images[0]}
+            src={getImageUrl(product.images[0])}
             alt={product.name}
             className="w-full h-48 md:h-64 lg:h-72 object-contain p-2 md:p-4 group-hover:scale-110 transition-transform duration-500"
             onError={handleImageError}

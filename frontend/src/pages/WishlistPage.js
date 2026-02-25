@@ -5,6 +5,13 @@ import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
 import { toast } from 'react-toastify';
 
+const getImageUrl = (imageUrl) => {
+  if (!imageUrl) return null;
+  if (imageUrl.startsWith('http')) return imageUrl;
+  const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  return baseUrl.replace(/\/api\/?$/, '') + imageUrl;
+};
+
 const WishlistPage = () => {
   const { wishlist, loading, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
@@ -138,7 +145,7 @@ const WishlistPage = () => {
                     <div className="h-72 flex items-center justify-center p-6">
                       {product.images && product.images[0] ? (
                         <img
-                          src={product.images[0]}
+                          src={getImageUrl(product.images[0])}
                           alt={product.name}
                           className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                         />

@@ -3,6 +3,13 @@ import { Link } from 'react-router-dom';
 import api from '../utils/api';
 import { FaSearch, FaBox, FaTruck, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
+const getImageUrl = (imageUrl) => {
+  if (!imageUrl) return null;
+  if (imageUrl.startsWith('http')) return imageUrl;
+  const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  return baseUrl.replace(/\/api\/?$/, '') + imageUrl;
+};
+
 const TrackOrderPage = () => {
   const [orderId, setOrderId] = useState('');
   const [email, setEmail] = useState('');
@@ -224,7 +231,7 @@ const TrackOrderPage = () => {
                 {order.orderItems.map((item) => (
                   <div key={item._id} className="flex items-center gap-4 border-b border-gray-200 pb-4 last:border-0">
                     <img
-                      src={item.image}
+                      src={getImageUrl(item.image)}
                       alt={item.name}
                       className="w-20 h-20 object-cover rounded"
                     />
