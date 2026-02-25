@@ -104,8 +104,8 @@ const Navbar = () => {
     'Serum': 'serum',
     'Toner': 'toner',
     'Sunscreen': 'sunscreen',
-    'Moisturizing Cream': 'moisturizer',
-    'Facial Washes': 'cleanser',
+    'Moisturiser': 'moisturiser',
+    'Cleanser': 'cleanser',
   };
 
   // Function to get link for menu items
@@ -132,40 +132,24 @@ const Navbar = () => {
     skincare: {
       sections: [
         {
-          title: '💧 SERUM & TREATMENT',
-          items: ['Serum', 'Ampoule', 'Essence', 'Blemish Treatment', 'Essential Oil']
+          title: '✨ SERUM',
+          items: ['Serum']
         },
         {
-          title: '💦 TONER & EXFOLIATOR',
-          items: ['Toner', 'Exfoliator']
+          title: '💧 MOISTURISER',
+          items: ['Moisturiser']
         },
         {
-          title: '💼 MOISTURIZER',
-          items: ['Moisturizing Cream', 'Face Oil', 'Night Cream', 'Whitening Cream', 'Anti Melasma', 'Soothing Gel']
+          title: '🧴 CLEANSER',
+          items: ['Cleanser']
         },
         {
-          title: '🧴 CLEANSERS',
-          items: ['Facial Washes', 'Makeup Removers', 'Cleansing Soap', 'Toner Pads']
+          title: '💦 TONER',
+          items: ['Toner']
         },
         {
-          title: '💎 SKINCARE SET & KITS',
-          items: ['Snail Kit', 'All Kit']
-        },
-        {
-          title: '👁️ EYES',
-          items: ['Eye Cream', 'Eye Serum']
-        },
-        {
-          title: '☀️ SUN PROTECTION',
-          items: ['Sunscreen', 'Sun Stick']
-        },
-        {
-          title: '🎯 ACNE TREATMENT',
-          items: ['Face Scrub', 'Sheet Masks', 'Pimple Patches', 'Clay Mask', 'Face Pack']
-        },
-        {
-          title: '💋 LIP CARE',
-          items: []
+          title: '☀️ SUNSCREEN',
+          items: ['Sunscreen']
         }
       ]
     },

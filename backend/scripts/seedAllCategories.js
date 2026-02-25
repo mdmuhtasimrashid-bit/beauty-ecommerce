@@ -19,22 +19,7 @@ const mainCategories = [
 // Subcategories mapped to parent
 const subcategories = {
   'Skincare': [
-    // Serum & Treatment
-    'Serum', 'Ampoule', 'Essence', 'Blemish Treatment', 'Essential Oil',
-    // Toner & Exfoliator
-    'Toner', 'Exfoliator',
-    // Moisturizer
-    'Moisturizing Cream', 'Face Oil', 'Night Cream', 'Whitening Cream', 'Anti Melasma', 'Soothing Gel',
-    // Cleansers
-    'Facial Washes', 'Makeup Removers', 'Cleansing Soap', 'Toner Pads',
-    // Skincare Set & Kits
-    'Snail Kit', 'All Kit',
-    // Eyes
-    'Eye Cream', 'Eye Serum',
-    // Sun Protection
-    'Sunscreen', 'Sun Stick',
-    // Acne Treatment
-    'Face Scrub', 'Sheet Masks', 'Pimple Patches', 'Clay Mask', 'Face Pack',
+    'Serum', 'Moisturiser', 'Cleanser', 'Toner', 'Sunscreen',
   ],
   'Makeup': [
     // Eyes Makeup
