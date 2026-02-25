@@ -455,7 +455,7 @@ This is a proprietary project. Contributions are not currently accepted.
 
 This project and its contents are proprietary and confidential. Unauthorized copying, distribution, or use of this software is strictly prohibited.
 
-**Developed by**: AdCreativeBD
+**Developed by**: MH45
 
 ---
 
@@ -463,7 +463,7 @@ This project and its contents are proprietary and confidential. Unauthorized cop
 
 For technical issues:
 - 📧 Email: support@glowiva.com
-- 📱 Phone: +880 1601266599
+- 📱 Phone: +880 1314893055
 - 🌐 Website: https://glowivabd.com
 
 ---
