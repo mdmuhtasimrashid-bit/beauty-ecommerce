@@ -144,8 +144,8 @@ const AdminProducts = () => {
         const { data } = await api.post('/upload/single', formDataUpload, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        const baseUrl = (process.env.REACT_APP_API_URL || 'http://localhost:5000/api').replace('/api', '');
-        uploadedUrls.push(`${baseUrl}${data.url}`);
+        // Store only the relative path - Nginx/backend will serve it
+        uploadedUrls.push(data.url);
       } catch (error) {
         toast.error(`Failed to upload ${file.name}`);
         console.error('Upload error:', error);
