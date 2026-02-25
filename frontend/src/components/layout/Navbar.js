@@ -702,7 +702,7 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setMobileMenuOpen(false)}>
           <div 
-            className="w-4/5 max-w-sm h-full bg-white shadow-xl overflow-y-auto"
+            className="w-4/5 max-w-sm h-full bg-white shadow-xl overflow-y-auto pb-20"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Mobile Menu Header */}
