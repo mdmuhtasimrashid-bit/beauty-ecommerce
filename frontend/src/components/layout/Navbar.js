@@ -82,8 +82,9 @@ const Navbar = () => {
   // Handle clicks outside the search suggestions
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (searchRef.current && !searchRef.current.contains(event.target) &&
-          mobileSearchRef.current && !mobileSearchRef.current.contains(event.target)) {
+      const isOutsideDesktop = !searchRef.current || !searchRef.current.contains(event.target);
+      const isOutsideMobile = !mobileSearchRef.current || !mobileSearchRef.current.contains(event.target);
+      if (isOutsideDesktop && isOutsideMobile) {
         setShowSuggestions(false);
       }
     };

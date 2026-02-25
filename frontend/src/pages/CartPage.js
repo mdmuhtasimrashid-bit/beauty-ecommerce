@@ -19,6 +19,11 @@ const CartPage = () => {
     return baseUrl.replace('/api', '') + imageUrl;
   };
 
+  const subtotal = getCartTotal();
+  const shippingCost = parseFloat(shippingMethod);
+  const discount = appliedCoupon ? appliedCoupon.discount : 0;
+  const total = subtotal - discount + shippingCost;
+
   const handleApplyCoupon = async () => {
     if (!couponCode.trim()) {
       toast.error('Please enter a coupon code');
@@ -53,11 +58,6 @@ const CartPage = () => {
   const handleUpdateCart = () => {
     toast.success('Cart updated');
   };
-
-  const shippingCost = parseFloat(shippingMethod);
-  const subtotal = getCartTotal();
-  const discount = appliedCoupon ? appliedCoupon.discount : 0;
-  const total = subtotal - discount + shippingCost;
 
   if (cartItems.length === 0) {
     return (

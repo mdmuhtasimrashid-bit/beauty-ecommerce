@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import api from '../../utils/api';
 import { FaSearch, FaUserShield, FaUser, FaTrash, FaEye, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCalendar } from 'react-icons/fa';
 
 const AdminUsers = () => {
@@ -23,20 +23,17 @@ const AdminUsers = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/users`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const { data } = await api.get('/users');
 
-      setUsers(data.data);
-      
+      const usersArray = Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
+      setUsers(usersArray);
+
       // Calculate stats
-      const adminCount = data.data.filter(u => u.role === 'admin').length;
+      const adminCount = usersArray.filter(u => u.role === 'admin').length;
       setStats({
-        totalUsers: data.data.length,
+        totalUsers: usersArray.length,
         adminUsers: adminCount,
-        regularUsers: data.data.length - adminCount
+        regularUsers: usersArray.length - adminCount
       });
       
       setLoading(false);
@@ -53,11 +50,7 @@ const AdminUsers = () => {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      
-      await axios.delete(`${process.env.REACT_APP_API_URL}/users/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.delete(`/users/${userId}`);
 
       toast.success('User deleted successfully');
       fetchUsers();
@@ -73,11 +66,7 @@ const AdminUsers = () => {
 
   const viewUserDetails = async (userId) => {
     try {
-      const token = localStorage.getItem('token');
-      
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/users/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const { data } = await api.get(`/users/${userId}`);
 
       setSelectedUser(data.data);
       setShowModal(true);

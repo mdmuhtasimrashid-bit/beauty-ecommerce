@@ -71,7 +71,7 @@ const OffersPage = () => {
         let offerProducts = [];
         
         if (offerCategory) {
-          offerProducts = allProducts.filter(p => p.category === offerCategory._id);
+          offerProducts = allProducts.filter(p => (p.category?._id || p.category) === offerCategory._id);
         }
         
         const saleProducts = allProducts.filter(p => p.discountPrice && p.discountPrice > 0 && p.discountPrice < p.price);

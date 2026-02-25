@@ -18,7 +18,7 @@ const BrandSlider = () => {
     const fetchBrands = async () => {
       try {
         const { data } = await api.get('/brands');
-        setBrands(data.data);
+        setBrands(data.data || []);
       } catch (error) {
         console.error('Error fetching brands:', error);
       }

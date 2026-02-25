@@ -34,7 +34,7 @@ const TrackOrderPage = () => {
   };
 
   const getStatusIcon = (status) => {
-    switch (status) {
+    switch (status?.toLowerCase()) {
       case 'delivered':
         return <FaCheckCircle className="text-green-500 text-3xl" />;
       case 'cancelled':
@@ -47,7 +47,7 @@ const TrackOrderPage = () => {
   };
 
   const getStatusColor = (status) => {
-    switch (status) {
+    switch (status?.toLowerCase()) {
       case 'delivered':
         return 'bg-green-100 text-green-800';
       case 'cancelled':
@@ -70,7 +70,7 @@ const TrackOrderPage = () => {
     ];
 
     const statusOrder = ['pending', 'processing', 'shipped', 'delivered'];
-    const currentIndex = statusOrder.indexOf(status);
+    const currentIndex = statusOrder.indexOf(status?.toLowerCase());
 
     return steps.map((step, index) => ({
       ...step,
@@ -176,7 +176,7 @@ const TrackOrderPage = () => {
               </div>
 
               {/* Progress Steps */}
-              {order.orderStatus !== 'cancelled' && (
+              {order.orderStatus?.toLowerCase() !== 'cancelled' && (
                 <div className="mb-8">
                   <div className="flex justify-between items-center">
                     {getStatusSteps(order.orderStatus).map((step, index, array) => (

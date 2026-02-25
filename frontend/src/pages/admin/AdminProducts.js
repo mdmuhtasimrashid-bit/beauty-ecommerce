@@ -144,7 +144,8 @@ const AdminProducts = () => {
         const { data } = await api.post('/upload/single', formDataUpload, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        uploadedUrls.push(`http://localhost:5000${data.url}`);
+        const baseUrl = (process.env.REACT_APP_API_URL || 'http://localhost:5000/api').replace('/api', '');
+        uploadedUrls.push(`${baseUrl}${data.url}`);
       } catch (error) {
         toast.error(`Failed to upload ${file.name}`);
         console.error('Upload error:', error);
@@ -152,7 +153,7 @@ const AdminProducts = () => {
     }
 
     if (uploadedUrls.length > 0) {
-      setFormData({ ...formData, images: [...formData.images, ...uploadedUrls] });
+      setFormData(prev => ({ ...prev, images: [...prev.images, ...uploadedUrls] }));
       toast.success(`${uploadedUrls.length} image(s) uploaded successfully`);
     }
   };
@@ -279,7 +280,7 @@ const AdminProducts = () => {
   };
 
   const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    (product.name || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {

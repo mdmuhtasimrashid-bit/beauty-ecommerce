@@ -29,6 +29,10 @@ const ProductDetailPage = () => {
   const { toggleWishlist, isInWishlist } = useWishlist();
 
   useEffect(() => {
+    setQuantity(1);
+    setSelectedImage(0);
+    setProduct(null);
+    setLoading(true);
     fetchProduct();
   }, [slug]);
 
@@ -344,31 +348,8 @@ const ProductDetailPage = () => {
           <div className="p-8">
             {activeTab === 'description' && (
               <div className="prose max-w-none">
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  <strong>{product.name}</strong> is a refreshing facial cleanser designed to deeply cleanse, brighten, 
-                  and energize the skin. Enriched with the natural goodness of <strong>lemon extract</strong>, this face 
-                  wash helps remove excess oil, dirt, and impurities while promoting a fresh, radiant complexion. It is 
-                  especially suitable for oily, combination, and dull skin.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  Lemon is known for its natural cleansing and brightening properties. It helps control excess sebum, 
-                  unclog pores, and reduce the appearance of dullness caused by pollution and daily impurities. With 
-                  regular use, {product.name} supports a clearer-looking complexion and a healthy glow without 
-                  over-drying the skin.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  The gentle yet effective formula creates a light lather that cleanses deeply while maintaining the skin's 
-                  natural moisture balance. It helps refresh tired skin, making it an excellent choice for daily use—both in 
-                  the morning to energize your skin and at night to wash away the day's buildup.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  {product.name} also helps improve skin texture by keeping pores clean and minimizing the chances of 
-                  breakouts caused by excess oil. Its refreshing citrus fragrance adds an uplifting touch to your skincare 
-                  routine, leaving your skin feeling clean, smooth, and revitalized after every wash.
-                </p>
-                <p className="text-gray-700 leading-relaxed">
-                  Formulated with skin-friendly ingredients, this face wash is suitable for everyday use and fits seamlessly 
-                  into a simple skincare routine. Use it regularly to maintain fresh, oil-balanced, and brighter-looking skin.
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                  {product.description || 'No description available.'}
                 </p>
               </div>
             )}

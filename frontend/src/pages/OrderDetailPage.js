@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { FaArrowRight, FaCheckCircle } from 'react-icons/fa';
 import api from '../utils/api';
 import { toast } from 'react-toastify';
 
 const OrderDetailPage = () => {
   const { id } = useParams();
+  const location = useLocation();
+  const fromCheckout = location.state?.fromCheckout;
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -72,17 +74,19 @@ const OrderDetailPage = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        {/* Success Message */}
-        <div className="bg-green-50 border-2 border-green-500 rounded-lg p-6 mb-8 text-center">
-          <FaCheckCircle className="text-green-500 text-6xl mx-auto mb-4" />
-          <h1 className="text-3xl font-bold text-green-800 mb-2">Order Placed Successfully!</h1>
-          <p className="text-gray-700 mb-4">
-            Thank you for your order. Your order has been received and is being processed.
-          </p>
-          <p className="text-sm text-gray-600">
-            Order Number: <span className="font-bold text-gray-800">#{order.orderNumber || order._id}</span>
-          </p>
-        </div>
+        {/* Success Message - only show when coming from checkout */}
+        {fromCheckout && (
+          <div className="bg-green-50 border-2 border-green-500 rounded-lg p-6 mb-8 text-center">
+            <FaCheckCircle className="text-green-500 text-6xl mx-auto mb-4" />
+            <h1 className="text-3xl font-bold text-green-800 mb-2">Order Placed Successfully!</h1>
+            <p className="text-gray-700 mb-4">
+              Thank you for your order. Your order has been received and is being processed.
+            </p>
+            <p className="text-sm text-gray-600">
+              Order Number: <span className="font-bold text-gray-800">#{order.orderNumber || order._id}</span>
+            </p>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Order Details */}
