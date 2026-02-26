@@ -46,7 +46,7 @@ const AdminProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const { data } = await api.get('/products');
+      const { data } = await api.get('/products?limit=1000');
       const productsArray = Array.isArray(data) ? data : (data.data || data.products || []);
       setProducts(productsArray);
       setLoading(false);
