@@ -92,45 +92,52 @@ const HomePage = () => {
           <Slider {...bannerSettings}>
             {banners.map((banner) => (
               <div key={banner._id} className="relative w-full">
-                <div 
-                  className="h-[240px] md:h-[380px] lg:h-[500px] w-full flex items-center bg-cover bg-center relative"
-                  style={{
-                    backgroundImage: banner.image ? `url(${getImageUrl(banner.image)})` : 'none',
-                    backgroundColor: banner.image ? 'transparent' : '#f3e8ff'
-                  }}
-                >
-                  {/* Overlay for better text readability */}
-                  {banner.image && (
-                    <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+                <div className="relative w-full overflow-hidden" style={{ backgroundColor: banner.image ? 'transparent' : '#f3e8ff' }}>
+                  {banner.image ? (
+                    <img
+                      src={getImageUrl(banner.image)}
+                      alt={banner.title || 'Banner'}
+                      className="w-full h-auto max-h-[500px] object-contain"
+                    />
+                  ) : (
+                    <div className="h-[240px] md:h-[380px] lg:h-[500px]"></div>
                   )}
-                  
-                  <div className="container mx-auto px-4 relative z-10">
-                    <div className="max-w-2xl">
-                      {banner.title && (
-                        <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold mb-3 md:mb-4 text-white drop-shadow-lg">
-                          {banner.title}
-                        </h2>
+
+                  {/* Text overlay */}
+                  {(banner.title || banner.subtitle || banner.description || banner.buttonText) && (
+                    <div className="absolute inset-0 flex items-center">
+                      {banner.image && (
+                        <div className="absolute inset-0 bg-black bg-opacity-30"></div>
                       )}
-                      {banner.subtitle && (
-                        <p className="text-lg md:text-xl lg:text-2xl mb-3 md:mb-4 text-white drop-shadow-lg">
-                          {banner.subtitle}
-                        </p>
-                      )}
-                      {banner.description && (
-                        <p className="text-sm md:text-base lg:text-lg mb-4 md:mb-6 text-white drop-shadow-lg">
-                          {banner.description}
-                        </p>
-                      )}
-                      {banner.buttonText && banner.buttonLink && (
-                        <Link 
-                          to={banner.buttonLink} 
-                          className="inline-block bg-pink-600 text-white px-6 md:px-8 py-2 md:py-3 rounded-lg hover:bg-pink-700 transition-colors font-semibold shadow-lg text-sm md:text-base"
-                        >
-                          {banner.buttonText}
-                        </Link>
-                      )}
+                      <div className="container mx-auto px-4 relative z-10">
+                        <div className="max-w-2xl">
+                          {banner.title && (
+                            <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold mb-3 md:mb-4 text-white drop-shadow-lg">
+                              {banner.title}
+                            </h2>
+                          )}
+                          {banner.subtitle && (
+                            <p className="text-lg md:text-xl lg:text-2xl mb-3 md:mb-4 text-white drop-shadow-lg">
+                              {banner.subtitle}
+                            </p>
+                          )}
+                          {banner.description && (
+                            <p className="text-sm md:text-base lg:text-lg mb-4 md:mb-6 text-white drop-shadow-lg">
+                              {banner.description}
+                            </p>
+                          )}
+                          {banner.buttonText && banner.buttonLink && (
+                            <Link
+                              to={banner.buttonLink}
+                              className="inline-block bg-pink-600 text-white px-6 md:px-8 py-2 md:py-3 rounded-lg hover:bg-pink-700 transition-colors font-semibold shadow-lg text-sm md:text-base"
+                            >
+                              {banner.buttonText}
+                            </Link>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             ))}
