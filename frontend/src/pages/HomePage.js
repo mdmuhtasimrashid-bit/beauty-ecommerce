@@ -93,12 +93,11 @@ const HomePage = () => {
             {banners.map((banner) => (
               <div key={banner._id}>
                 {banner.image ? (
-                  <div className="relative">
+                  <div className="relative h-[200px] sm:h-[280px] md:h-[380px] lg:h-[450px] xl:h-[500px]">
                     <img
                       src={getImageUrl(banner.image)}
                       alt={banner.title || 'Banner'}
-                      className="w-full block"
-                      style={{ maxWidth: '100%', height: 'auto' }}
+                      className="w-full h-full object-cover block"
                     />
                     {/* Text overlay - only if there's text content */}
                     {(banner.title || banner.subtitle || banner.description || banner.buttonText) && (
