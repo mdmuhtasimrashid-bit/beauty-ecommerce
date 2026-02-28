@@ -549,7 +549,7 @@ const Navbar = () => {
               onMouseLeave={() => setActiveMegaMenu(null)}
             >
               <Link
-                to="/category/skin-care"
+                to="/category/skincare"
                 className="whitespace-nowrap text-sm font-medium hover:text-primary-500 transition-colors"
               >
                 🟢 SKIN CARE
@@ -583,7 +583,7 @@ const Navbar = () => {
               onMouseLeave={() => setActiveMegaMenu(null)}
             >
               <Link
-                to="/category/make-up"
+                to="/category/makeup"
                 className="whitespace-nowrap text-sm font-medium hover:text-primary-500 transition-colors"
               >
                 MAKE UP
@@ -617,7 +617,7 @@ const Navbar = () => {
               onMouseLeave={() => setActiveMegaMenu(null)}
             >
               <Link
-                to="/category/hair-care"
+                to="/category/haircare"
                 className="whitespace-nowrap text-sm font-medium hover:text-primary-500 transition-colors"
               >
                 HAIR CARE
@@ -651,7 +651,7 @@ const Navbar = () => {
               onMouseLeave={() => setActiveMegaMenu(null)}
             >
               <Link
-                to="/category/body-care"
+                to="/category/bodycare"
                 className="whitespace-nowrap text-sm font-medium hover:text-primary-500 transition-colors"
               >
                 BODY CARE
@@ -769,13 +769,21 @@ const Navbar = () => {
 
               {/* SKIN CARE */}
               <div className="border-b border-gray-100">
-                <button
-                  onClick={() => setExpandedMobileMenu(expandedMobileMenu === 'skincare' ? null : 'skincare')}
-                  className="w-full flex items-center justify-between px-6 py-3 hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-                >
-                  <span>🟢 SKIN CARE</span>
-                  {expandedMobileMenu === 'skincare' ? <FaChevronDown /> : <FaChevronRight />}
-                </button>
+                <div className="flex items-center">
+                  <Link
+                    to="/category/skincare"
+                    className="flex-1 px-6 py-3 hover:bg-gray-50 text-gray-700 font-medium transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    🟢 SKIN CARE
+                  </Link>
+                  <button
+                    onClick={() => setExpandedMobileMenu(expandedMobileMenu === 'skincare' ? null : 'skincare')}
+                    className="px-4 py-3 hover:bg-gray-50 text-gray-500"
+                  >
+                    {expandedMobileMenu === 'skincare' ? <FaChevronDown /> : <FaChevronRight />}
+                  </button>
+                </div>
                 {expandedMobileMenu === 'skincare' && (
                   <div className="bg-gray-50 px-6 py-2">
                     {megaMenus.skincare.sections.map((section, idx) => (
@@ -799,13 +807,21 @@ const Navbar = () => {
 
               {/* MAKE UP */}
               <div className="border-b border-gray-100">
-                <button
-                  onClick={() => setExpandedMobileMenu(expandedMobileMenu === 'makeup' ? null : 'makeup')}
-                  className="w-full flex items-center justify-between px-6 py-3 hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-                >
-                  <span>MAKE UP</span>
-                  {expandedMobileMenu === 'makeup' ? <FaChevronDown /> : <FaChevronRight />}
-                </button>
+                <div className="flex items-center">
+                  <Link
+                    to="/category/makeup"
+                    className="flex-1 px-6 py-3 hover:bg-gray-50 text-gray-700 font-medium transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    MAKE UP
+                  </Link>
+                  <button
+                    onClick={() => setExpandedMobileMenu(expandedMobileMenu === 'makeup' ? null : 'makeup')}
+                    className="px-4 py-3 hover:bg-gray-50 text-gray-500"
+                  >
+                    {expandedMobileMenu === 'makeup' ? <FaChevronDown /> : <FaChevronRight />}
+                  </button>
+                </div>
                 {expandedMobileMenu === 'makeup' && (
                   <div className="bg-gray-50 px-6 py-2">
                     {megaMenus.makeup.sections.map((section, idx) => (
@@ -829,13 +845,21 @@ const Navbar = () => {
 
               {/* HAIR CARE */}
               <div className="border-b border-gray-100">
-                <button
-                  onClick={() => setExpandedMobileMenu(expandedMobileMenu === 'haircare' ? null : 'haircare')}
-                  className="w-full flex items-center justify-between px-6 py-3 hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-                >
-                  <span>HAIR CARE</span>
-                  {expandedMobileMenu === 'haircare' ? <FaChevronDown /> : <FaChevronRight />}
-                </button>
+                <div className="flex items-center">
+                  <Link
+                    to="/category/haircare"
+                    className="flex-1 px-6 py-3 hover:bg-gray-50 text-gray-700 font-medium transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    HAIR CARE
+                  </Link>
+                  <button
+                    onClick={() => setExpandedMobileMenu(expandedMobileMenu === 'haircare' ? null : 'haircare')}
+                    className="px-4 py-3 hover:bg-gray-50 text-gray-500"
+                  >
+                    {expandedMobileMenu === 'haircare' ? <FaChevronDown /> : <FaChevronRight />}
+                  </button>
+                </div>
                 {expandedMobileMenu === 'haircare' && (
                   <div className="bg-gray-50 px-6 py-2">
                     {megaMenus.haircare.sections.map((section, idx) => (
@@ -859,13 +883,21 @@ const Navbar = () => {
 
               {/* BODY CARE */}
               <div className="border-b border-gray-100">
-                <button
-                  onClick={() => setExpandedMobileMenu(expandedMobileMenu === 'bodycare' ? null : 'bodycare')}
-                  className="w-full flex items-center justify-between px-6 py-3 hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-                >
-                  <span>BODY CARE</span>
-                  {expandedMobileMenu === 'bodycare' ? <FaChevronDown /> : <FaChevronRight />}
-                </button>
+                <div className="flex items-center">
+                  <Link
+                    to="/category/bodycare"
+                    className="flex-1 px-6 py-3 hover:bg-gray-50 text-gray-700 font-medium transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    BODY CARE
+                  </Link>
+                  <button
+                    onClick={() => setExpandedMobileMenu(expandedMobileMenu === 'bodycare' ? null : 'bodycare')}
+                    className="px-4 py-3 hover:bg-gray-50 text-gray-500"
+                  >
+                    {expandedMobileMenu === 'bodycare' ? <FaChevronDown /> : <FaChevronRight />}
+                  </button>
+                </div>
                 {expandedMobileMenu === 'bodycare' && (
                   <div className="bg-gray-50 px-6 py-2">
                     {megaMenus.bodycare.sections.map((section, idx) => (
