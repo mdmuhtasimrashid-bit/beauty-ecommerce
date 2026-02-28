@@ -1,63 +1,37 @@
-require('dotenv').config();
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const Product = require('../models/Product');
+const Category = require('../models/Category');
 const Brand = require('../models/Brand');
+const connectDB = require('../config/db');
 
-const cleanupBrands = async () => {
+dotenv.config();
+connectDB().then(async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('Connected to MongoDB\n');
+    const brands = await Brand.find({}).lean();
+    let deactivated = 0;
+    let active = 0;
 
-    // Find all brands with similar names
-    const allBrands = await Brand.find({});
-    console.log('Current brands:');
-    allBrands.forEach(b => {
-      console.log(`  - ${b.name} (slug: ${b.slug})`);
-    });
-    console.log('');
+    console.log('Checking brands for products...\n');
 
-    // Find duplicates
-    const skinOVariants = allBrands.filter(b => 
-      b.name.toLowerCase().includes('skin') && b.name.toLowerCase().includes('o')
-    );
-    
-    if (skinOVariants.length > 1) {
-      console.log('Found multiple skinO variants:', skinOVariants.map(b => `${b.name} (${b.slug})`).join(', '));
-      
-      // Delete the one with wrong slug (Skin'O with slug "dove")
-      const wrongOne = skinOVariants.find(b => b.slug === 'dove');
-      if (wrongOne) {
-        await Brand.findByIdAndDelete(wrongOne._id);
-        console.log(`✅ Deleted duplicate "${wrongOne.name}" with wrong slug "dove"\n`);
+    for (const b of brands) {
+      const count = await Product.countDocuments({ brand: b._id });
+      if (count === 0) {
+        await Brand.updateOne({ _id: b._id }, { isActive: false });
+        console.log(`  ❌ Deactivated: ${b.name} (0 products)`);
+        deactivated++;
+      } else {
+        await Brand.updateOne({ _id: b._id }, { isActive: true });
+        console.log(`  ✅ Active: ${b.name} (${count} products)`);
+        active++;
       }
     }
 
-    // Now add Dove if it doesn't exist
-    const doveExists = await Brand.findOne({ name: 'Dove' });
-    if (!doveExists) {
-      const dove = await Brand.create({
-        name: 'Dove',
-        description: 'Personal care brand',
-        isActive: true
-      });
-      console.log(`✅ Added "Dove" (slug: ${dove.slug})\n`);
-    } else {
-      console.log('Dove already exists\n');
-    }
-
-    // List all brands sorted
-    const finalBrands = await Brand.find({}).sort({ name: 1 });
-    console.log('=== FINAL BRAND LIST ===\n');
-    finalBrands.forEach((brand, index) => {
-      console.log(`${index + 1}. ${brand.name} (slug: ${brand.slug})`);
-    });
-    console.log(`\n📊 Total: ${finalBrands.length} brands`);
-
-    await mongoose.connection.close();
-    console.log('\nDone!');
+    console.log(`\n✅ ${active} active brands`);
+    console.log(`❌ ${deactivated} deactivated brands (no products)`);
+    process.exit();
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error.message);
     process.exit(1);
   }
-};
-
-cleanupBrands();
+});

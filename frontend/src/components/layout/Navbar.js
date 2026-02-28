@@ -121,12 +121,14 @@ const Navbar = () => {
   const megaMenus = {
     brands: {
       items: [
-        ['Anua', 'AXIS-Y', 'Beauty of Joseon'],
-        ['Christian dean', 'COSRX', 'DABO'],
-        ['Dot & Key', 'Dr.Althea', 'Glow Industry'],
-        ['I\'M FROM', 'IUNIK', 'MARS Cosmetics'],
-        ['Missha', 'Simple', 'SKIN 1004'],
-        ['skinO', 'The Derma Co.', 'WishCare']
+        ['Anua', 'AXIS-Y', 'BIOAQUA'],
+        ['CeraVe', 'COSRX', 'DABO'],
+        ['Dr.Althea', 'Glutathione', 'Innsaei'],
+        ['IUNIK', 'LAIKOU', 'Laneige'],
+        ['Mamaearth', 'Missha', 'Mistine'],
+        ['Pond\'s', 'Simple', 'SKIN 1004'],
+        ['skinO', 'Skinfood', 'The Ordinary'],
+        ['Vaseline', 'Rajkonna', 'Glowivaa Essentials']
       ]
     },
     skincare: {

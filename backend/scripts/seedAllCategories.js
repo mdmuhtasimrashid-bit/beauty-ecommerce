@@ -56,26 +56,34 @@ const subcategories = {
   ],
 };
 
-// All brands from the Navbar
+// All brands with products
 const brands = [
   { name: 'Anua', description: 'Korean skincare brand focused on natural ingredients' },
   { name: 'AXIS-Y', description: 'Korean skincare with multi-textured approach' },
-  { name: 'Beauty of Joseon', description: 'Traditional Korean beauty ingredients' },
-  { name: 'Christian dean', description: 'Premium skincare solutions' },
+  { name: 'BIOAQUA', description: 'Affordable skincare and beauty brand with diverse product range' },
+  { name: 'CeraVe', description: 'Dermatologist-developed skincare with essential ceramides' },
   { name: 'COSRX', description: 'Affordable Korean skincare solutions' },
   { name: 'DABO', description: 'Korean beauty and skincare' },
-  { name: 'Dot & Key', description: 'Fun and effective skincare' },
   { name: 'Dr.Althea', description: 'Dermatologist-developed skincare' },
-  { name: 'Glow Industry', description: 'Glow-boosting skincare products' },
+  { name: 'Glutathione', description: 'Brightening and antioxidant skincare brand' },
+  { name: 'Glowivaa Essentials', description: 'Curated beauty essentials by Glowivaa' },
   { name: "I'M FROM", description: 'Natural ingredient-focused Korean skincare' },
+  { name: 'Innsaei', description: 'Low pH balanced skincare for gentle and effective cleansing' },
   { name: 'IUNIK', description: 'Minimal ingredient Korean skincare' },
-  { name: 'MARS Cosmetics', description: 'Trendy and affordable cosmetics' },
+  { name: 'LAIKOU', description: 'Japanese-inspired skincare with cherry blossom and natural extracts' },
+  { name: 'Laneige', description: 'Korean luxury skincare and makeup brand by Amore Pacific' },
+  { name: 'Mamaearth', description: 'Natural and toxin-free personal care brand from India' },
   { name: 'Missha', description: 'Korean beauty innovation' },
+  { name: 'Mistine', description: "Thailand's leading beauty brand with affordable quality products" },
+  { name: "Pond's", description: 'Iconic skincare brand known for moisturizers and anti-aging solutions' },
+  { name: 'Rajkonna', description: 'Bangladeshi beauty brand with natural and herbal formulations' },
   { name: 'Simple', description: 'Kind to skin, simple skincare' },
   { name: 'SKIN 1004', description: 'Centella Asiatica skincare specialists' },
   { name: 'skinO', description: 'Premium skincare solutions' },
-  { name: 'The Derma Co.', description: 'Science-backed skincare' },
-  { name: 'WishCare', description: 'Wish for better skincare' },
+  { name: 'Skinfood', description: 'Korean beauty brand using food-derived ingredients for skin nourishment' },
+  { name: 'The Face Shop', description: 'Korean beauty brand with nature-inspired skincare' },
+  { name: 'The Ordinary', description: 'Clinical skincare with integrity — effective formulations at honest prices' },
+  { name: 'Vaseline', description: 'Trusted skincare brand specializing in moisturizing and healing dry skin' },
 ];
 
 const seedData = async () => {
