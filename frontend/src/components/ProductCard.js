@@ -65,7 +65,10 @@ const ProductCard = ({ product }) => {
           <img
             src={getImageUrl(product.images[0])}
             alt={product.name}
-            className="w-full h-48 md:h-64 lg:h-72 object-contain p-2 md:p-4 group-hover:scale-110 transition-transform duration-500"
+            className="w-full h-48 md:h-64 lg:h-72 object-contain p-2 md:p-4 group-hover:brightness-105 transition-all duration-500"
+            width={288}
+            height={288}
+            loading="lazy"
             onError={handleImageError}
           />
         ) : (

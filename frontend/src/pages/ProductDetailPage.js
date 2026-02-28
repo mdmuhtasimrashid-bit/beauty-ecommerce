@@ -151,6 +151,8 @@ const ProductDetailPage = () => {
                 <img
                   src={getImageUrl(product.images && product.images[selectedImage]) || '/placeholder.jpg'}
                   alt={product.name}
+                  width={600}
+                  height={384}
                   className="w-full h-96 object-contain p-8"
                   onError={(e) => {
                     e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23d1d5db"%3E%3Cpath stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /%3E%3C/svg%3E';
@@ -179,7 +181,10 @@ const ProductDetailPage = () => {
                     >
                       <img
                         src={getImageUrl(img)}
-                        alt={`${product.name} ${index + 1}`} 
+                        alt={`${product.name} ${index + 1}`}
+                        width={80}
+                        height={80}
+                        loading="lazy"
                         className="w-full h-full object-contain p-1"
                         onError={(e) => e.target.style.display = 'none'}
                       />
@@ -196,9 +201,12 @@ const ProductDetailPage = () => {
                 {product.brand && (
                   <div className="flex items-center mb-4">
                     {product.brand.logo ? (
-                      <img 
+                      <img
                         src={getImageUrl(product.brand.logo)}
-                        alt={product.brand.name} 
+                        alt={product.brand.name}
+                        width={120}
+                        height={48}
+                        loading="lazy"
                         className="h-12 object-contain"
                         onError={(e) => {
                           e.target.style.display = 'none';

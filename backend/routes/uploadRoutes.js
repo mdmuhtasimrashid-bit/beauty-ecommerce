@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const sharp = require('sharp');
 const { protect, admin } = require('../middleware/auth');
 
 // Create uploads directory if it doesn't exist
@@ -11,7 +12,7 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Configure multer storage
+// Configure multer storage - store to temp first
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadDir);
@@ -41,13 +42,49 @@ const upload = multer({
   fileFilter: fileFilter
 });
 
+// Compress and optimize image
+const optimizeImage = async (filePath) => {
+  const ext = path.extname(filePath).toLowerCase();
+
+  // Skip GIFs (animated)
+  if (ext === '.gif') return;
+
+  const tempPath = filePath + '.tmp';
+
+  try {
+    await sharp(filePath)
+      .resize(1200, 1200, {
+        fit: 'inside',
+        withoutEnlargement: true
+      })
+      .webp({ quality: 80 })
+      .toFile(tempPath);
+
+    // Replace original with optimized version
+    const originalName = path.basename(filePath, ext);
+    const webpPath = path.join(path.dirname(filePath), originalName + '.webp');
+
+    fs.unlinkSync(filePath);
+    fs.renameSync(tempPath, webpPath);
+
+    return path.basename(webpPath);
+  } catch (err) {
+    // If optimization fails, keep original
+    if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
+    console.error('Image optimization failed:', err.message);
+    return path.basename(filePath);
+  }
+};
+
 // Upload single image
-router.post('/single', protect, admin, upload.single('image'), (req, res) => {
+router.post('/single', protect, admin, upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded' });
     }
-    const fileUrl = `/uploads/${req.file.filename}`;
+
+    const optimizedFilename = await optimizeImage(req.file.path);
+    const fileUrl = `/uploads/${optimizedFilename || req.file.filename}`;
     res.json({ url: fileUrl });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -55,12 +92,18 @@ router.post('/single', protect, admin, upload.single('image'), (req, res) => {
 });
 
 // Upload multiple images
-router.post('/multiple', protect, admin, upload.array('images', 10), (req, res) => {
+router.post('/multiple', protect, admin, upload.array('images', 10), async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ message: 'No files uploaded' });
     }
-    const fileUrls = req.files.map(file => `/uploads/${file.filename}`);
+
+    const fileUrls = [];
+    for (const file of req.files) {
+      const optimizedFilename = await optimizeImage(file.path);
+      fileUrls.push(`/uploads/${optimizedFilename || file.filename}`);
+    }
+
     res.json({ urls: fileUrls });
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -69,13 +69,16 @@ const TestimonialsSlider = ({ testimonials }) => {
           <Slider {...settings}>
             {testimonials.map((testimonial) => (
               <div key={testimonial._id} className="px-3">
-                <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-transform hover:scale-105">
+                <div className="bg-white rounded-2xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl">
                   {/* Image Container */}
                   <div className="relative">
                     {getImageUrl(testimonial.image) ? (
                     <img
                       src={getImageUrl(testimonial.image)}
                       alt={testimonial.customerName}
+                      width={400}
+                      height={300}
+                      loading="lazy"
                       className="w-full h-auto object-contain"
                     />
                     ) : (

@@ -89,6 +89,9 @@ const CategoryGrid = () => {
                   <img
                     src={getImageUrl(category.image)}
                     alt={category.name}
+                    width={112}
+                    height={112}
+                    loading="lazy"
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       // Fallback to icon if image fails to load
@@ -97,7 +100,7 @@ const CategoryGrid = () => {
                     }}
                   />
                 ) : null}
-                <div 
+                <div
                   className={`w-full h-full bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center text-4xl ${category.image ? 'hidden' : 'flex'}`}
                 >
                   {categoryIcons[category.slug] || '🎯'}
@@ -119,11 +122,14 @@ const CategoryGrid = () => {
             to={`/category/${category.slug}`}
             className="text-center group"
           >
-            <div className="relative w-36 h-36 lg:w-40 lg:h-40 mx-auto mb-4 rounded-full overflow-hidden border-4 border-yellow-400 shadow-lg transition-all duration-300 hover:border-pink-500 hover:scale-105">
+            <div className="relative w-36 h-36 lg:w-40 lg:h-40 mx-auto mb-4 rounded-full overflow-hidden border-4 border-yellow-400 shadow-lg transition-all duration-300 hover:border-pink-500 hover:shadow-xl">
               {category.image ? (
                 <img
                   src={getImageUrl(category.image)}
                   alt={category.name}
+                  width={160}
+                  height={160}
+                  loading="lazy"
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     // Fallback to icon if image fails to load
