@@ -1,45 +1,45 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const Product = require('../models/Product');
-const Category = require('../models/Category');
 const connectDB = require('../config/db');
 
 dotenv.config();
-connectDB();
-
-const checkProducts = async () => {
+connectDB().then(async () => {
   try {
-    const products = await Product.find({})
-      .populate('category', 'name slug')
-      .limit(20);
-    
-    console.log('\n📦 Products in database:\n');
-    
+    const products = await Product.find({
+      $or: [
+        { category: null },
+        { category: { $exists: false } },
+        { brand: null },
+        { brand: { $exists: false } },
+        { price: null },
+        { price: 0 },
+        { price: { $exists: false } },
+        { stock: null },
+        { stock: 0 },
+        { stock: { $exists: false } },
+      ]
+    }).select('name category brand price stock').populate('category', 'name').populate('brand', 'name').lean();
+
     if (products.length === 0) {
-      console.log('❌ No products found in database');
+      console.log('All products have category, brand, price, and stock set.');
     } else {
-      products.forEach((product, index) => {
-        console.log(`${index + 1}. ${product.name}`);
-        console.log(`   Category: ${product.category ? product.category.name + ' (slug: ' + product.category.slug + ')' : 'No category assigned'}`);
-        console.log(`   Category ID: ${product.category ? product.category._id : 'null'}`);
+      console.log(`Found ${products.length} products with issues:\n`);
+      products.forEach(p => {
+        const issues = [];
+        if (!p.category) issues.push('NO CATEGORY');
+        if (!p.brand) issues.push('NO BRAND');
+        if (!p.price) issues.push('NO PRICE');
+        if (!p.stock) issues.push('STOCK=0');
+        console.log(`${p.name}`);
+        console.log(`  Issues: ${issues.join(', ')}`);
+        console.log(`  Category: ${p.category?.name || '-'} | Brand: ${p.brand?.name || '-'} | Price: ${p.price || 0} | Stock: ${p.stock || 0}`);
         console.log('');
       });
     }
-    
-    console.log(`\nTotal: ${products.length} products\n`);
-    
-    // List all categories
-    const categories = await Category.find({});
-    console.log('📋 Available Categories:\n');
-    categories.forEach(cat => {
-      console.log(`  - ${cat.name} (slug: ${cat.slug}, ID: ${cat._id})`);
-    });
-    
     process.exit();
   } catch (error) {
-    console.error('❌ Error:', error);
+    console.error('Error:', error);
     process.exit(1);
   }
-};
-
-checkProducts();
+});
