@@ -31,7 +31,8 @@ const Footer = () => {
             {/* About Section */}
             <div>
               <div className="flex items-center mb-3 md:mb-4">
-                <img src="/logo-glowiva.jpg" alt="Glowiva" className="h-12 md:h-14 w-auto object-contain" />
+                <img src="/logo-glowiva.png" alt="Glowiva" className="h-12 md:h-14 w-auto object-contain" />
+                <span className="ml-1 text-xl md:text-2xl font-bold tracking-wide" style={{ color: '#4a5e3b' }}>GLOWIVA</span>
               </div>
               <p className="text-gray-600 mb-3 md:mb-4 text-sm md:text-base">
                 Glowiva is a refined destination for premium beauty and skincare, curating authentic, high-quality products from trusted global brands. We are committed to elegance, excellence, and delivering a seamless luxury shopping experience with care and sophistication.

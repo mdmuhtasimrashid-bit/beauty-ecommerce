@@ -247,7 +247,8 @@ const Navbar = () => {
 
             {/* Logo - Center on mobile, Left on desktop */}
             <Link to="/" className="flex items-center md:flex-1">
-              <img src="/logo-glowiva.jpg" alt="Glowiva" className="h-10 md:h-12 w-auto object-contain" />
+              <img src="/logo-glowiva.png" alt="Glowiva" className="h-10 md:h-12 w-auto object-contain" />
+              <span className="ml-1 text-xl md:text-2xl font-bold tracking-wide" style={{ color: '#4a5e3b' }}>GLOWIVA</span>
             </Link>
 
             {/* Search Bar */}
@@ -704,7 +705,10 @@ const Navbar = () => {
           >
             {/* Mobile Menu Header */}
             <div className="bg-gradient-to-r from-pink-600 to-purple-600 text-white p-4 flex items-center justify-between">
-              <img src="/logo-glowiva.jpg" alt="Glowiva" className="h-10 w-auto object-contain rounded" />
+              <div className="flex items-center">
+                <img src="/logo-glowiva.png" alt="Glowiva" className="h-10 w-auto object-contain" />
+                <span className="ml-1 text-xl font-bold tracking-wide" style={{ color: '#4a5e3b' }}>GLOWIVA</span>
+              </div>
               <button onClick={() => setMobileMenuOpen(false)} className="text-2xl">
                 <FaTimes />
               </button>
