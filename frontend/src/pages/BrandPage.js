@@ -28,7 +28,6 @@ const BrandPage = () => {
 
   useEffect(() => {
     fetchBrandData();
-    fetchTopRatedProducts();
   }, [brandName]);
 
   const fetchBrandData = async () => {
@@ -36,19 +35,30 @@ const BrandPage = () => {
       // Fetch single brand by slug using the proper API endpoint
       const { data: brandData } = await api.get(`/brands/${brandName.toLowerCase()}`);
       const foundBrand = brandData.data || brandData;
-      
+
       if (foundBrand) {
         setBrand(foundBrand);
         const { data: productsData } = await api.get(`/products?brand=${foundBrand._id}`);
         const productsArray = productsData.data || productsData.products || productsData || [];
         setProducts(productsArray);
-        
+
         if (productsArray.length > 0) {
           const prices = productsArray.map(p => p.discountPrice || p.price);
           setMinPrice(Math.min(...prices));
           setMaxPrice(Math.max(...prices));
           setPriceRange([Math.min(...prices), Math.max(...prices)]);
         }
+
+        // Fetch top rated products for this brand
+        const { data: topData } = await api.get(`/products?brand=${foundBrand._id}&sort=-ratings&limit=6`);
+        const topProducts = topData.data || topData.products || topData || [];
+        // Shuffle and pick 3 so they vary
+        const shuffled = Array.isArray(topProducts) ? [...topProducts] : [];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        setTopRatedProducts(shuffled.slice(0, 3));
       }
       setLoading(false);
     } catch (error) {
@@ -59,15 +69,6 @@ const BrandPage = () => {
         toast.error('Failed to load brand information');
       }
       setLoading(false);
-    }
-  };
-
-  const fetchTopRatedProducts = async () => {
-    try {
-      const { data } = await api.get('/products?sort=-ratings&limit=3');
-      setTopRatedProducts(data.data || data.products || data || []);
-    } catch (error) {
-      console.error('Failed to fetch top rated products');
     }
   };
 
