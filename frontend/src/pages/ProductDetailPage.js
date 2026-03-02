@@ -50,11 +50,22 @@ const ProductDetailPage = () => {
       setProduct(productData);
       setLoading(false);
       
-      // Fetch related products
+      // Fetch related products - get more than needed so we can shuffle and pick varied ones
       if (productData.category) {
-        const { data: relatedData } = await api.get(`/products?category=${productData.category._id || productData.category}&limit=8`);
+        const categoryId = productData.category._id || productData.category;
+        const { data: relatedData } = await api.get(`/products?category=${categoryId}&limit=20`);
         const related = relatedData.data || relatedData.products || relatedData;
-        setRelatedProducts(Array.isArray(related) ? related.filter(p => p._id !== productData._id) : []);
+        if (Array.isArray(related)) {
+          // Remove current product, shuffle, then pick 4
+          const filtered = related.filter(p => p._id !== productData._id);
+          for (let i = filtered.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
+          }
+          setRelatedProducts(filtered.slice(0, 4));
+        } else {
+          setRelatedProducts([]);
+        }
       }
     } catch (error) {
       console.error('Failed to fetch product:', error);
