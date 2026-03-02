@@ -236,7 +236,7 @@ const Navbar = () => {
       {/* Top Bar */}
       <div className="bg-white border-b">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between py-3 md:py-4">
+          <div className="flex items-center justify-between py-2.5 md:py-3">
             {/* Mobile Menu Toggle - Left */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -252,19 +252,19 @@ const Navbar = () => {
             </Link>
 
             {/* Search Bar */}
-            <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-2xl mx-8">
+            <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xl lg:max-w-2xl mx-6 lg:mx-8">
               <div className="relative w-full" ref={searchRef}>
                 <input
                   type="text"
                   placeholder="Search for products"
-                  className="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-primary-500"
+                  className="w-full px-4 py-2.5 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-500 text-sm"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => searchQuery.trim().length >= 2 && setShowSuggestions(true)}
                 />
                 <button
                   type="submit"
-                  className="absolute right-0 top-0 bottom-0 px-6 bg-primary-500 text-white rounded-r-lg hover:bg-primary-600"
+                  className="absolute right-0 top-0 bottom-0 px-5 bg-primary-500 text-white rounded-r-lg hover:bg-primary-600 transition-colors"
                 >
                   <FaSearch />
                 </button>
@@ -328,17 +328,17 @@ const Navbar = () => {
             </form>
 
             {/* Right Icons */}
-            <div className="flex items-center space-x-3 md:space-x-6">
+            <div className="flex items-center space-x-2 md:space-x-4 lg:space-x-5">
               {/* Login/Register or User Menu - Desktop Only */}
               <div className="hidden md:block">
                 {isAuthenticated ? (
                   <div className="relative">
                     <button
                       onClick={() => setUserMenuOpen(!userMenuOpen)}
-                      className="flex items-center space-x-2 hover:text-primary-500"
+                      className="flex items-center space-x-2 hover:text-primary-500 text-gray-700"
                     >
-                      <FaUser className="text-xl" />
-                      <span className="hidden lg:block">{user?.name}</span>
+                      <FaUser className="text-lg" />
+                      <span className="hidden lg:block text-sm font-medium">{user?.name}</span>
                     </button>
                     
                     {userMenuOpen && (
@@ -383,38 +383,38 @@ const Navbar = () => {
                     )}
                   </div>
                 ) : (
-                  <Link to="/login" className="flex items-center space-x-1 hover:text-primary-500">
-                    <FaUser className="text-xl" />
-                    <span className="hidden lg:block">LOGIN / REGISTER</span>
+                  <Link to="/login" className="flex items-center space-x-1.5 hover:text-primary-500 text-gray-700">
+                    <FaUser className="text-lg" />
+                    <span className="hidden lg:block text-sm font-medium whitespace-nowrap">LOGIN / REGISTER</span>
                   </Link>
                 )}
               </div>
 
-              {/* Wishlist - Mobile badge only */}
-              <Link to="/wishlist" className="relative hover:text-primary-500 flex items-center justify-center w-10 h-10">
-                <FaHeart className="text-2xl" />
+              {/* Wishlist */}
+              <Link to="/wishlist" className="relative hover:text-primary-500 text-gray-700 flex items-center justify-center w-9 h-9">
+                <FaHeart className="text-xl" />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                  <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold leading-none">
                     {wishlistCount}
                   </span>
                 )}
               </Link>
 
               {/* Compare - Desktop Only */}
-              <Link to="/compare" className="relative hover:text-primary-500 hidden md:flex items-center justify-center w-10 h-10">
-                <FaExchangeAlt className="text-2xl" />
+              <Link to="/compare" className="relative hover:text-primary-500 text-gray-700 hidden md:flex items-center justify-center w-9 h-9">
+                <FaExchangeAlt className="text-xl" />
                 {compareCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold leading-none">
                     {compareCount}
                   </span>
                 )}
               </Link>
 
               {/* Cart */}
-              <Link to="/cart" className="relative hover:text-primary-500 flex items-center justify-center w-10 h-10">
-                <FaShoppingCart className="text-2xl" />
+              <Link to="/cart" className="relative hover:text-primary-500 text-gray-700 flex items-center justify-center w-9 h-9">
+                <FaShoppingCart className="text-xl" />
                 {getCartCount() > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                  <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold leading-none">
                     {getCartCount()}
                   </span>
                 )}
@@ -509,7 +509,7 @@ const Navbar = () => {
       {/* Categories Navigation */}
       <div className="bg-white border-b hidden md:block relative">
         <div className="container mx-auto px-4">
-          <div className="flex items-center space-x-6 py-3">
+          <div className="flex items-center justify-center space-x-5 lg:space-x-8 py-2.5">
             <div
               className="relative"
               onMouseEnter={() => setActiveMegaMenu('brands')}

@@ -43,21 +43,27 @@ const upload = multer({
 });
 
 // Compress and optimize image
-const optimizeImage = async (filePath) => {
+const optimizeImage = async (filePath, options = {}) => {
   const ext = path.extname(filePath).toLowerCase();
 
   // Skip GIFs (animated)
   if (ext === '.gif') return;
 
+  const {
+    maxWidth = 1200,
+    maxHeight = 1200,
+    quality = 80
+  } = options;
+
   const tempPath = filePath + '.tmp';
 
   try {
     await sharp(filePath)
-      .resize(1200, 1200, {
+      .resize(maxWidth, maxHeight, {
         fit: 'inside',
         withoutEnlargement: true
       })
-      .webp({ quality: 80 })
+      .webp({ quality })
       .toFile(tempPath);
 
     // Replace original with optimized version
@@ -84,6 +90,25 @@ router.post('/single', protect, admin, upload.single('image'), async (req, res) 
     }
 
     const optimizedFilename = await optimizeImage(req.file.path);
+    const fileUrl = `/uploads/${optimizedFilename || req.file.filename}`;
+    res.json({ url: fileUrl });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Upload banner image (higher resolution for full-width banners)
+router.post('/banner', protect, admin, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    const optimizedFilename = await optimizeImage(req.file.path, {
+      maxWidth: 1920,
+      maxHeight: 800,
+      quality: 90
+    });
     const fileUrl = `/uploads/${optimizedFilename || req.file.filename}`;
     res.json({ url: fileUrl });
   } catch (error) {

@@ -101,7 +101,7 @@ const AdminBanners = () => {
 
     try {
       setUploading(true);
-      const { data } = await api.post('/upload/single', formDataUpload, {
+      const { data } = await api.post('/upload/banner', formDataUpload, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

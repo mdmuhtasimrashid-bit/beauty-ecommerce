@@ -87,21 +87,23 @@ const HomePage = () => {
   return (
     <div className="home-page pb-20 md:pb-0">
       {/* Hero Banner Slider */}
-      <section className="hero-section w-full">
+      <section className="hero-section w-full relative">
         {banners.length > 0 ? (
           <Slider {...bannerSettings}>
             {banners.map((banner) => (
               <div key={banner._id}>
                 {banner.image ? (
-                  <div className="relative h-[200px] sm:h-[280px] md:h-[380px] lg:h-[450px] xl:h-[500px]">
+                  <div className="relative h-[200px] sm:h-[280px] md:h-[380px] lg:h-[450px] xl:h-[500px] overflow-hidden">
                     <img
                       src={getImageUrl(banner.image)}
                       alt={banner.title || 'Banner'}
                       className="w-full h-full object-cover block"
+                      style={{ imageRendering: 'auto', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
+                      loading="eager"
                     />
                     {/* Text overlay - only if there's text content */}
                     {(banner.title || banner.subtitle || banner.description || banner.buttonText) && (
-                      <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center">
+                      <div className="absolute inset-0 flex items-center">
                         <div className="container mx-auto px-4">
                           <div className="max-w-2xl">
                             {banner.title && (
@@ -151,6 +153,12 @@ const HomePage = () => {
             </div>
           </div>
         )}
+        {/* Curved wave bottom overlay */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none" style={{ marginBottom: '-1px' }}>
+          <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block">
+            <path d="M0,80 L0,40 Q360,0 720,40 Q1080,80 1440,40 L1440,80 Z" fill="#1a0a2e"/>
+          </svg>
+        </div>
       </section>
 
       {/* Shop By Category */}
