@@ -92,9 +92,9 @@ const HomePage = () => {
           <Slider {...bannerSettings}>
             {banners.map((banner) => (
               <div key={banner._id}>
+                <Link to="/products" className="block cursor-pointer">
                 {banner.image ? (
                   <div className="relative overflow-hidden">
-                    {/* Desktop image - hidden on mobile when mobile image exists */}
                     <picture>
                       {banner.mobileImage && (
                         <source media="(max-width: 639px)" srcSet={getImageUrl(banner.mobileImage)} />
@@ -107,8 +107,7 @@ const HomePage = () => {
                         loading="eager"
                       />
                     </picture>
-                    {/* Text overlay - only if there's text content */}
-                    {(banner.title || banner.subtitle || banner.description || banner.buttonText) && (
+                    {(banner.title || banner.subtitle || banner.description) && (
                       <div className="absolute inset-0 flex items-center">
                         <div className="container mx-auto px-4">
                           <div className="max-w-2xl">
@@ -127,14 +126,6 @@ const HomePage = () => {
                                 {banner.description}
                               </p>
                             )}
-                            {banner.buttonText && banner.buttonLink && (
-                              <Link
-                                to={banner.buttonLink}
-                                className="inline-block bg-pink-600 text-white px-6 md:px-8 py-2 md:py-3 rounded-lg hover:bg-pink-700 transition-colors font-semibold shadow-lg text-sm md:text-base"
-                              >
-                                {banner.buttonText}
-                              </Link>
-                            )}
                           </div>
                         </div>
                       </div>
@@ -143,21 +134,19 @@ const HomePage = () => {
                 ) : (
                   <div className="h-[200px] sm:h-[280px] md:h-[380px] lg:h-[500px]" style={{ backgroundColor: '#f3e8ff' }}></div>
                 )}
+                </Link>
               </div>
             ))}
           </Slider>
         ) : (
-          <div className="bg-gradient-to-r from-pink-100 to-purple-100 h-[240px] md:h-[380px] lg:h-[500px] w-full flex items-center">
+          <Link to="/products" className="block cursor-pointer bg-gradient-to-r from-pink-100 to-purple-100 h-[240px] md:h-[380px] lg:h-[500px] w-full flex items-center">
             <div className="container mx-auto px-4 text-center">
               <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold mb-3 md:mb-4">
                 Welcome to <span className="text-primary-500">Glowiva</span>
               </h2>
               <p className="text-base md:text-xl mb-4 md:mb-6">Shop authentic Korean and international beauty products</p>
-              <Link to="/products" className="inline-block bg-pink-600 text-white px-6 md:px-8 py-2 md:py-3 rounded-lg hover:bg-pink-700 transition-colors font-semibold text-sm md:text-base">
-                SHOP NOW
-              </Link>
             </div>
-          </div>
+          </Link>
         )}
       </section>
 
