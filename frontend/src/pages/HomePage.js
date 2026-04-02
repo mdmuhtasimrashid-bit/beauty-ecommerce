@@ -93,12 +93,12 @@ const HomePage = () => {
             {banners.map((banner) => (
               <div key={banner._id}>
                 {banner.image ? (
-                  <div className="relative h-[200px] sm:h-[280px] md:h-[380px] lg:h-[450px] xl:h-[500px] overflow-hidden">
+                  <div className="relative overflow-hidden">
                     {/* Desktop image */}
                     <img
                       src={getImageUrl(banner.image)}
                       alt={banner.title || 'Banner'}
-                      className={`w-full h-full object-cover block ${banner.mobileImage ? 'hidden sm:block' : ''}`}
+                      className={`w-full block ${banner.mobileImage ? 'hidden sm:block' : ''}`}
                       style={{ imageRendering: 'auto', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
                       loading="eager"
                     />
@@ -107,7 +107,7 @@ const HomePage = () => {
                       <img
                         src={getImageUrl(banner.mobileImage)}
                         alt={banner.title || 'Banner'}
-                        className="w-full h-full object-cover block sm:hidden"
+                        className="w-full block sm:hidden"
                         style={{ imageRendering: 'auto', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
                         loading="eager"
                       />
@@ -146,7 +146,7 @@ const HomePage = () => {
                     )}
                   </div>
                 ) : (
-                  <div className="h-[240px] md:h-[380px] lg:h-[500px]" style={{ backgroundColor: '#f3e8ff' }}></div>
+                  <div className="h-[200px] sm:h-[280px] md:h-[380px] lg:h-[500px]" style={{ backgroundColor: '#f3e8ff' }}></div>
                 )}
               </div>
             ))}

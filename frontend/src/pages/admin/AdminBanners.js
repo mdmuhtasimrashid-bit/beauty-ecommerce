@@ -120,19 +120,12 @@ const AdminBanners = () => {
     const formDataUpload = new FormData();
     formDataUpload.append('image', imageFile);
 
-    try {
-      setUploading(true);
-      const { data } = await api.post('/upload/banner', formDataUpload, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      setUploading(false);
-      return data.url;
-    } catch (error) {
-      setUploading(false);
-      throw error;
-    }
+    const { data } = await api.post('/upload/banner', formDataUpload, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return data.url;
   };
 
   const uploadMobileImage = async () => {
@@ -141,23 +134,17 @@ const AdminBanners = () => {
     const formDataUpload = new FormData();
     formDataUpload.append('image', mobileImageFile);
 
-    try {
-      setUploading(true);
-      const { data } = await api.post('/upload/banner-mobile', formDataUpload, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      setUploading(false);
-      return data.url;
-    } catch (error) {
-      setUploading(false);
-      throw error;
-    }
+    const { data } = await api.post('/upload/banner-mobile', formDataUpload, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return data.url;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setUploading(true);
     try {
       let imageUrl = formData.image;
       if (imageFile) {
@@ -166,6 +153,7 @@ const AdminBanners = () => {
 
       if (!imageUrl) {
         toast.error('Please upload a banner image');
+        setUploading(false);
         return;
       }
 
@@ -192,9 +180,12 @@ const AdminBanners = () => {
       setImagePreview(null);
       setMobileImageFile(null);
       setMobileImagePreview(null);
+      setUploading(false);
       fetchBanners();
     } catch (error) {
-      toast.error(error.response?.data?.error || 'Failed to save banner');
+      setUploading(false);
+      console.error('Banner save error:', error);
+      toast.error(error.response?.data?.error || error.response?.data?.message || error.message || 'Failed to save banner');
     }
   };
 
