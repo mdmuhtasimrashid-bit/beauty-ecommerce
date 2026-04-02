@@ -94,24 +94,19 @@ const HomePage = () => {
               <div key={banner._id}>
                 {banner.image ? (
                   <div className="relative overflow-hidden">
-                    {/* Desktop image */}
-                    <img
-                      src={getImageUrl(banner.image)}
-                      alt={banner.title || 'Banner'}
-                      className={`w-full block ${banner.mobileImage ? 'hidden sm:block' : ''}`}
-                      style={{ imageRendering: 'auto', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
-                      loading="eager"
-                    />
-                    {/* Mobile image - only rendered if a separate mobile image exists */}
-                    {banner.mobileImage && (
+                    {/* Desktop image - hidden on mobile when mobile image exists */}
+                    <picture>
+                      {banner.mobileImage && (
+                        <source media="(max-width: 639px)" srcSet={getImageUrl(banner.mobileImage)} />
+                      )}
                       <img
-                        src={getImageUrl(banner.mobileImage)}
+                        src={getImageUrl(banner.image)}
                         alt={banner.title || 'Banner'}
-                        className="w-full block sm:hidden"
+                        className="w-full block"
                         style={{ imageRendering: 'auto', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
                         loading="eager"
                       />
-                    )}
+                    </picture>
                     {/* Text overlay - only if there's text content */}
                     {(banner.title || banner.subtitle || banner.description || banner.buttonText) && (
                       <div className="absolute inset-0 flex items-center">
