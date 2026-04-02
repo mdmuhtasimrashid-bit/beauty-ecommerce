@@ -116,6 +116,25 @@ router.post('/banner', protect, admin, upload.single('image'), async (req, res) 
   }
 });
 
+// Upload mobile banner image (optimized for portrait/mobile view)
+router.post('/banner-mobile', protect, admin, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    const optimizedFilename = await optimizeImage(req.file.path, {
+      maxWidth: 800,
+      maxHeight: 800,
+      quality: 85
+    });
+    const fileUrl = `/uploads/${optimizedFilename || req.file.filename}`;
+    res.json({ url: fileUrl });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Upload multiple images
 router.post('/multiple', protect, admin, upload.array('images', 10), async (req, res) => {
   try {

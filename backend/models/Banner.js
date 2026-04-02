@@ -17,6 +17,10 @@ const BannerSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add an image']
   },
+  mobileImage: {
+    type: String,
+    default: ''
+  },
   buttonText: {
     type: String,
     default: 'SHOP NOW'

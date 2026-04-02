@@ -11,11 +11,14 @@ const AdminBanners = () => {
   const [uploading, setUploading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [mobileImageFile, setMobileImageFile] = useState(null);
+  const [mobileImagePreview, setMobileImagePreview] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
     subtitle: '',
     description: '',
     image: '',
+    mobileImage: '',
     buttonText: 'SHOP NOW',
     buttonLink: '/products',
     isActive: true,
@@ -54,6 +57,7 @@ const AdminBanners = () => {
       subtitle: '',
       description: '',
       image: '',
+      mobileImage: '',
       buttonText: 'SHOP NOW',
       buttonLink: '/products',
       isActive: true,
@@ -61,6 +65,8 @@ const AdminBanners = () => {
     });
     setImageFile(null);
     setImagePreview(null);
+    setMobileImageFile(null);
+    setMobileImagePreview(null);
     setShowModal(true);
   };
 
@@ -71,6 +77,7 @@ const AdminBanners = () => {
       subtitle: banner.subtitle || '',
       description: banner.description || '',
       image: banner.image || '',
+      mobileImage: banner.mobileImage || '',
       buttonText: banner.buttonText || 'SHOP NOW',
       buttonLink: banner.buttonLink || '/products',
       isActive: banner.isActive,
@@ -78,6 +85,8 @@ const AdminBanners = () => {
     });
     setImageFile(null);
     setImagePreview(banner.image ? getImageUrl(banner.image) : null);
+    setMobileImageFile(null);
+    setMobileImagePreview(banner.mobileImage ? getImageUrl(banner.mobileImage) : null);
     setShowModal(true);
   };
 
@@ -88,6 +97,18 @@ const AdminBanners = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleMobileImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setMobileImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setMobileImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -114,6 +135,27 @@ const AdminBanners = () => {
     }
   };
 
+  const uploadMobileImage = async () => {
+    if (!mobileImageFile) return formData.mobileImage;
+
+    const formDataUpload = new FormData();
+    formDataUpload.append('image', mobileImageFile);
+
+    try {
+      setUploading(true);
+      const { data } = await api.post('/upload/banner-mobile', formDataUpload, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      setUploading(false);
+      return data.url;
+    } catch (error) {
+      setUploading(false);
+      throw error;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -127,9 +169,15 @@ const AdminBanners = () => {
         return;
       }
 
+      let mobileImageUrl = formData.mobileImage;
+      if (mobileImageFile) {
+        mobileImageUrl = await uploadMobileImage();
+      }
+
       const submitData = {
         ...formData,
-        image: imageUrl
+        image: imageUrl,
+        mobileImage: mobileImageUrl || ''
       };
 
       if (editingBanner) {
@@ -142,6 +190,8 @@ const AdminBanners = () => {
       setShowModal(false);
       setImageFile(null);
       setImagePreview(null);
+      setMobileImageFile(null);
+      setMobileImagePreview(null);
       fetchBanners();
     } catch (error) {
       toast.error(error.response?.data?.error || 'Failed to save banner');
@@ -297,6 +347,54 @@ const AdminBanners = () => {
                     </div>
                   </div>
 
+                  {/* Mobile Banner Image Upload */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Mobile Image (optional)</label>
+                    <p className="text-xs text-gray-500 mb-2">Upload a separate image optimized for mobile screens. If not provided, the desktop image will be used.</p>
+
+                    {mobileImagePreview && (
+                      <div className="mb-3 bg-gray-50 p-4 rounded-lg">
+                        <img
+                          src={mobileImagePreview}
+                          alt="Mobile Preview"
+                          className="max-h-48 mx-auto object-contain"
+                        />
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-3">
+                      <label className="flex-1 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-pink-500 transition-colors">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleMobileImageChange}
+                          className="hidden"
+                        />
+                        <div className="text-gray-600">
+                          <FaImage className="mx-auto h-8 w-8 mb-1 text-gray-400" />
+                          <p className="text-sm font-medium">
+                            {mobileImageFile ? mobileImageFile.name : 'Click to upload mobile image'}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">Recommended: 800x800px, PNG or JPG</p>
+                        </div>
+                      </label>
+
+                      {mobileImagePreview && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setMobileImageFile(null);
+                            setMobileImagePreview(null);
+                            setFormData({ ...formData, mobileImage: '' });
+                          }}
+                          className="px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium mb-2">Title</label>
@@ -387,6 +485,8 @@ const AdminBanners = () => {
                       setShowModal(false);
                       setImageFile(null);
                       setImagePreview(null);
+                      setMobileImageFile(null);
+                      setMobileImagePreview(null);
                     }}
                     disabled={uploading}
                     className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"

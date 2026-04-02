@@ -94,13 +94,24 @@ const HomePage = () => {
               <div key={banner._id}>
                 {banner.image ? (
                   <div className="relative h-[200px] sm:h-[280px] md:h-[380px] lg:h-[450px] xl:h-[500px] overflow-hidden">
+                    {/* Desktop image */}
                     <img
                       src={getImageUrl(banner.image)}
                       alt={banner.title || 'Banner'}
-                      className="w-full h-full object-cover block"
+                      className={`w-full h-full object-cover block ${banner.mobileImage ? 'hidden sm:block' : ''}`}
                       style={{ imageRendering: 'auto', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
                       loading="eager"
                     />
+                    {/* Mobile image - only rendered if a separate mobile image exists */}
+                    {banner.mobileImage && (
+                      <img
+                        src={getImageUrl(banner.mobileImage)}
+                        alt={banner.title || 'Banner'}
+                        className="w-full h-full object-cover block sm:hidden"
+                        style={{ imageRendering: 'auto', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
+                        loading="eager"
+                      />
+                    )}
                     {/* Text overlay - only if there's text content */}
                     {(banner.title || banner.subtitle || banner.description || banner.buttonText) && (
                       <div className="absolute inset-0 flex items-center">
